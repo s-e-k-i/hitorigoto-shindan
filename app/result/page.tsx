@@ -312,7 +312,7 @@ export default function ResultPage() {
 
             <div className="bg-amber-50 border-2 border-[#d4a017] rounded-2xl p-6 text-center">
               <h3 className="text-[#1e3a5f] font-bold text-lg mb-2">
-                次のステップ：個別相談（無料）
+                次のステップ：個別相談
               </h3>
               <p className="text-gray-600 text-sm mb-5 leading-relaxed">
                 診断結果をもとに、あなたに最適なスタートプランを
