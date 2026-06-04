@@ -320,7 +320,7 @@ export default function ResultPage() {
                 関達也が直接アドバイスします。
               </p>
               <a
-                href="#"
+                href="https://sekitatsuya.com/spot-consulting/"
                 className="inline-block bg-[#d4a017] hover:bg-[#c49010] text-white font-bold px-8 py-4 rounded-xl transition-colors text-base shadow-md"
               >
                 個別相談はこちら →

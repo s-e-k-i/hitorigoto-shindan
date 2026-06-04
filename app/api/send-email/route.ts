@@ -15,24 +15,30 @@ function rankBlock(
 ): string {
   const bt = businessTypes.find((b) => b.id === typeId);
   if (!bt) return "";
-  const bg = featured ? "#1e3a5f" : "#f9fafb";
-  const textColor = featured ? "#ffffff" : "#1f2937";
-  const subColor = featured ? "#93c5fd" : "#6b7280";
-  const bodyColor = featured ? "#dbeafe" : "#374151";
-  const commentColor = featured ? "#bfdbfe" : "#6b7280";
+  // featured（ネイビー背景）は白系テキスト、通常は指定カラーを使用
+  const bg          = featured ? "#1e3a5f" : "#ffffff";
+  const border      = featured ? "none" : "1px solid #e5e7eb";
+  const nameColor   = featured ? "#ffffff" : "#1e3a5f";
+  const descColor   = featured ? "#c8dcf8" : "#555555";
+  const bodyColor   = featured ? "#ffffff" : "#333333";
+  const scoreColor  = featured ? "#c8dcf8" : "#555555";
+  const scoreBg     = featured ? "rgba(255,255,255,0.12)" : "#f5f5f5";
+  const commentColor= featured ? "#ffffff" : "#333333";
+  const badgeBg     = featured ? "#d4a017" : "#e5e7eb";
+  const badgeColor  = featured ? "#1e3a5f" : "#333333";
   return `
-  <div style="background:${bg};border-radius:12px;padding:20px;margin-bottom:16px;">
+  <div style="background:${bg};border:${border};border-radius:12px;padding:20px;margin-bottom:16px;">
     <div style="margin-bottom:10px;">
-      <span style="background:${featured ? "#d4a017" : "#e5e7eb"};color:${featured ? "#1e3a5f" : "#374151"};font-size:12px;font-weight:bold;padding:3px 10px;border-radius:20px;margin-right:8px;">${label}</span>
-      <span style="font-size:18px;font-weight:bold;color:${textColor};">${bt.name}</span>
+      <span style="background:${badgeBg};color:${badgeColor};font-size:12px;font-weight:bold;padding:3px 10px;border-radius:20px;margin-right:8px;">${label}</span>
+      <span style="font-size:18px;font-weight:bold;color:${nameColor};">${bt.name}</span>
     </div>
-    <p style="font-size:13px;color:${subColor};margin:0 0 8px;">${bt.description}</p>
-    <p style="font-size:14px;color:${bodyColor};line-height:1.7;margin:0 0 12px;">${reason}</p>
-    <div style="background:${featured ? "rgba(255,255,255,0.12)" : "#f3f4f6"};border-radius:8px;padding:10px;font-size:12px;color:${subColor};">
+    <p style="font-size:13px;color:${descColor};margin:0 0 8px;">${bt.description}</p>
+    <p style="font-size:14px;color:${bodyColor};line-height:1.75;margin:0 0 12px;">${reason}</p>
+    <div style="background:${scoreBg};border-radius:8px;padding:10px;font-size:12px;color:${scoreColor};">
       即金性：${bt.immediacy}　参入条件：${bt.entryBar}　スケール性：${bt.scalability}
     </div>
-    <div style="margin-top:10px;border-left:3px solid #d4a017;padding-left:10px;font-size:12px;color:${commentColor};line-height:1.7;">
-      <strong style="color:#d4a017;display:block;margin-bottom:2px;">関達也のコメント</strong>
+    <div style="margin-top:10px;border-left:3px solid #d4a017;padding-left:10px;font-size:12px;color:${commentColor};line-height:1.75;">
+      <strong style="color:#d4a017;display:block;margin-bottom:4px;">関達也のコメント</strong>
       「${bt.sekiComment}」
     </div>
   </div>`;
@@ -44,7 +50,7 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
       (adv, i) => `
     <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;">
       <span style="flex-shrink:0;width:26px;height:26px;background:#d4a017;color:#1e3a5f;border-radius:50%;display:inline-block;text-align:center;line-height:26px;font-size:13px;font-weight:bold;">${i + 1}</span>
-      <p style="font-size:14px;color:#374151;line-height:1.75;margin:0;">${adv}</p>
+      <p style="font-size:14px;color:#ffffff;line-height:1.75;margin:0;">${adv}</p>
     </div>`
     )
     .join("");
@@ -68,7 +74,7 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
     <!-- 本文 -->
     <div style="padding:28px 24px;">
       <p style="font-size:16px;color:#1e3a5f;font-weight:bold;margin:0 0 6px;">${lastName}さん、診断結果が届きました！</p>
-      <p style="font-size:13px;color:#6b7280;margin:0 0 24px;">あなたに向いているひとりビジネスタイプのTOP3と、関達也からの個別アドバイスをお届けします。</p>
+      <p style="font-size:13px;color:#555555;margin:0 0 24px;">あなたに向いているひとりビジネスタイプのTOP3と、関達也からの個別アドバイスをお届けします。</p>
 
       <!-- 診断結果 1〜3位 -->
       <h2 style="font-size:16px;color:#1e3a5f;margin:0 0 14px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">診断結果</h2>
@@ -85,10 +91,10 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
       <!-- 個別相談CTA -->
       <div style="text-align:center;background:#fffbeb;border:2px solid #d4a017;border-radius:12px;padding:24px;margin-bottom:24px;">
         <p style="font-size:16px;font-weight:bold;color:#1e3a5f;margin:0 0 8px;">次のステップ：個別相談</p>
-        <p style="font-size:13px;color:#6b7280;margin:0 0 18px;line-height:1.7;">
+        <p style="font-size:13px;color:#333333;margin:0 0 18px;line-height:1.7;">
           診断結果をもとに、あなたに最適なスタートプランを<br>関達也が直接アドバイスします。
         </p>
-        <a href="#" style="display:inline-block;background:#d4a017;color:#ffffff;font-size:14px;font-weight:bold;padding:13px 32px;border-radius:8px;text-decoration:none;">
+        <a href="https://sekitatsuya.com/spot-consulting/" style="display:inline-block;background:#d4a017;color:#ffffff;font-size:14px;font-weight:bold;padding:13px 32px;border-radius:8px;text-decoration:none;">
           個別相談はこちら →
         </a>
       </div>
@@ -96,7 +102,7 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
       <!-- プロフィール -->
       <div style="border-top:1px solid #e5e7eb;padding-top:20px;">
         <p style="font-size:13px;font-weight:bold;color:#1e3a5f;margin:0 0 8px;">関達也 プロフィール</p>
-        <p style="font-size:12px;color:#6b7280;line-height:1.85;margin:0;">
+        <p style="font-size:12px;color:#555555;line-height:1.85;margin:0;">
           1993年、26歳で独立。飲食・物販・サービス業・教育事業など11種のひとりビジネスを実践。
           ドロップシッピング初年4,645万円、教材販売8,400万円超、メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。
           「せき塾」「MIB」など3,000名以上のひとり起業家を直接サポート。
