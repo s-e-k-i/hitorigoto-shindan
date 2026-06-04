@@ -56,7 +56,12 @@ Q12（AI・デジタル）: ${answers["q12"] ?? "未回答"}`;
       return Response.json({ error: "Unexpected response" }, { status: 500 });
     }
 
-    const result = JSON.parse(content.text.trim());
+    let jsonText = content.text.trim();
+    // Claude が ```json ... ``` で返すケースを除去
+    if (jsonText.startsWith("```")) {
+      jsonText = jsonText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
+    }
+    const result = JSON.parse(jsonText);
     return Response.json(result);
   } catch (err) {
     console.error("Diagnosis API error:", err);
