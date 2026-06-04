@@ -306,28 +306,28 @@ export default function ResultPage() {
               <h2 className="text-white text-lg font-bold mb-5">
                 関達也からの3つのアドバイス
               </h2>
-              <div style={{ display: "flex", flexDirection: "column" }}>
+              <div>
                 {result.advice.map((adv, i) => {
                   const text = adv.replace(/^[①②③1-9０-９][.．。）\)]\s*/, "").trim();
                   return (
-                    <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "16px" }}>
-                      <span style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
+                    <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "16px", marginBottom: "20px" }}>
+                      <div style={{
                         minWidth: "28px",
                         height: "28px",
                         background: "#d4a017",
                         color: "white",
                         borderRadius: "50%",
-                        fontWeight: "bold",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                         fontSize: "13px",
+                        fontWeight: "bold",
                         flexShrink: 0,
-                        marginTop: "2px",
+                        marginTop: "3px",
                       }}>
                         {i + 1}
-                      </span>
-                      <p style={{ margin: 0, fontSize: "14px", color: "rgba(219,234,254,1)", lineHeight: 1.7 }}>{text}</p>
+                      </div>
+                      <div style={{ fontSize: "14px", color: "rgba(219,234,254,1)", lineHeight: 1.7 }}>{text}</div>
                     </div>
                   );
                 })}

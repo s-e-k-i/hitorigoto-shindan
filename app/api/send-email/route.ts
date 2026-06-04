@@ -62,10 +62,16 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
     .map((adv, i) => {
       const text = adv.replace(/^[①②③1-9０-９][.．。）\)]\s*/, "").trim();
       return `
-    <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
-      <span style="display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;background:#d4a017;color:white;border-radius:50%;font-weight:bold;font-size:13px;flex-shrink:0;margin-top:2px;">${i + 1}</span>
-      <p style="font-size:14px;color:#ffffff;line-height:1.75;margin:0;">${text}</p>
-    </div>`;
+    <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;width:100%;">
+      <tr>
+        <td style="width:36px;vertical-align:top;padding-top:2px;">
+          <div style="width:28px;height:28px;background:#d4a017;border-radius:50%;color:white;font-weight:bold;font-size:13px;text-align:center;line-height:28px;">${i + 1}</div>
+        </td>
+        <td style="vertical-align:top;padding-left:8px;font-size:14px;color:#ffffff;line-height:1.75;">
+          ${text}
+        </td>
+      </tr>
+    </table>`;
     })
     .join("");
 
