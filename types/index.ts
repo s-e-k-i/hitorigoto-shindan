@@ -24,6 +24,7 @@ export type Answers = Record<string, string>;
 export interface RankResult {
   typeId: number;
   reason: string;
+  sekiComment?: string;
 }
 
 export interface DiagnosisResult {

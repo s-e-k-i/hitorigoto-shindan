@@ -43,11 +43,13 @@ function TypeCard({
   rankLabel,
   bt,
   reason,
+  sekiComment,
   featured,
 }: {
   rankLabel: string;
   bt: BusinessType;
   reason: string;
+  sekiComment?: string;
   featured?: boolean;
 }) {
   return (
@@ -112,7 +114,7 @@ function TypeCard({
         }`}
       >
         <p className="font-bold text-xs mb-1 text-[#d4a017]">関達也のコメント</p>
-        「{bt.sekiComment}」
+        「{sekiComment ?? bt.sekiComment}」
       </div>
     </div>
   );
@@ -201,6 +203,7 @@ export default function ResultPage() {
               rankLabel="🏆 1位"
               bt={rank1Type}
               reason={result.rank1.reason}
+              sekiComment={result.rank1.sekiComment}
               featured
             />
           </div>
@@ -228,10 +231,10 @@ export default function ResultPage() {
         {phase !== "email" && (
           <div className={`space-y-4 ${phase === "peek" ? "opacity-40 blur-sm pointer-events-none select-none" : ""}`}>
             {rank2Type && (
-              <TypeCard rankLabel="2位" bt={rank2Type} reason={result.rank2.reason} />
+              <TypeCard rankLabel="2位" bt={rank2Type} reason={result.rank2.reason} sekiComment={result.rank2.sekiComment} />
             )}
             {rank3Type && (
-              <TypeCard rankLabel="3位" bt={rank3Type} reason={result.rank3.reason} />
+              <TypeCard rankLabel="3位" bt={rank3Type} reason={result.rank3.reason} sekiComment={result.rank3.sekiComment} />
             )}
           </div>
         )}
