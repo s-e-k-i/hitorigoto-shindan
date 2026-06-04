@@ -4,8 +4,8 @@ import { DiagnosisResult } from "@/types";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Resend の onboarding@resend.dev が送信できる唯一のアドレス（ドメイン未検証時）
-const OWNER_EMAIL = "tatsu7676@gmail.com";
+// ドメイン未検証中は ADMIN_EMAIL 宛に全メールを転送する
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "tatsu7676@gmail.com";
 const SEND_TIMEOUT_MS = 30_000;
 
 // Promise にタイムアウトを付与するヘルパー
@@ -131,7 +131,8 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
 </html>`;
 }
 
-function buildLeadNotificationHtml(
+// 管理者（ADMIN_EMAIL）宛の通知メール：ユーザー情報＋診断結果を一覧表示
+function buildAdminNotificationHtml(
   lastName: string,
   userEmail: string,
   result: DiagnosisResult
@@ -139,39 +140,83 @@ function buildLeadNotificationHtml(
   const r1 = businessTypes.find((b) => b.id === result.rank1.typeId);
   const r2 = businessTypes.find((b) => b.id === result.rank2.typeId);
   const r3 = businessTypes.find((b) => b.id === result.rank3.typeId);
+
+  const adviceRows = result.advice
+    .map((adv, i) => `
+    <tr style="border-bottom:1px solid #e5e7eb;">
+      <td style="padding:10px 4px;color:#555555;width:8%;font-weight:bold;">${i + 1}</td>
+      <td style="padding:10px 4px;color:#333333;">${adv}</td>
+    </tr>`)
+    .join("");
+
   return `<!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"></head>
-<body style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#1f2937;">
-  <div style="background:#1e3a5f;color:#fff;padding:16px 20px;border-radius:8px;margin-bottom:20px;">
-    <h2 style="margin:0;font-size:16px;">📩 新規リード通知（ひとりビジネス適性診断）</h2>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:'Hiragino Sans','Hiragino Kaku Gothic ProN',sans-serif;">
+<div style="max-width:600px;margin:0 auto;background:#ffffff;">
+
+  <!-- ヘッダー -->
+  <div style="background:#1e3a5f;padding:20px 24px;">
+    <h1 style="color:#ffffff;font-size:18px;margin:0 0 4px;font-weight:bold;">📩 新規リード通知</h1>
+    <p style="color:#93c5fd;font-size:12px;margin:0;">ひとりビジネス適性診断</p>
   </div>
-  <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:20px;">
-    <tr style="border-bottom:1px solid #e5e7eb;">
-      <td style="padding:10px 4px;color:#6b7280;width:30%;">お名前（姓）</td>
-      <td style="padding:10px 4px;font-weight:bold;">${lastName}さん</td>
-    </tr>
-    <tr style="border-bottom:1px solid #e5e7eb;">
-      <td style="padding:10px 4px;color:#6b7280;">メールアドレス</td>
-      <td style="padding:10px 4px;font-weight:bold;"><a href="mailto:${userEmail}">${userEmail}</a></td>
-    </tr>
-    <tr style="border-bottom:1px solid #e5e7eb;">
-      <td style="padding:10px 4px;color:#6b7280;">1位タイプ</td>
-      <td style="padding:10px 4px;font-weight:bold;">${r1?.name ?? "不明"}</td>
-    </tr>
-    <tr style="border-bottom:1px solid #e5e7eb;">
-      <td style="padding:10px 4px;color:#6b7280;">2位タイプ</td>
-      <td style="padding:10px 4px;">${r2?.name ?? "不明"}</td>
-    </tr>
-    <tr>
-      <td style="padding:10px 4px;color:#6b7280;">3位タイプ</td>
-      <td style="padding:10px 4px;">${r3?.name ?? "不明"}</td>
-    </tr>
-  </table>
-  <div style="background:#f9fafb;border-radius:8px;padding:14px;font-size:13px;color:#374151;">
-    <strong>備考：</strong>Resend のドメイン未検証のため、ユーザー (${userEmail}) への自動送信はできませんでした。
-    上記メールアドレスに直接ご連絡ください。
+
+  <div style="padding:24px;">
+
+    <!-- ユーザー情報 -->
+    <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">ユーザー情報</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:24px;">
+      <tr style="border-bottom:1px solid #e5e7eb;">
+        <td style="padding:10px 4px;color:#555555;width:35%;">お名前（姓）</td>
+        <td style="padding:10px 4px;font-weight:bold;color:#333333;">${lastName}さん</td>
+      </tr>
+      <tr style="border-bottom:1px solid #e5e7eb;">
+        <td style="padding:10px 4px;color:#555555;">メールアドレス</td>
+        <td style="padding:10px 4px;font-weight:bold;">
+          <a href="mailto:${userEmail}" style="color:#1e3a5f;">${userEmail}</a>
+        </td>
+      </tr>
+    </table>
+
+    <!-- 診断結果 TOP3 -->
+    <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">診断結果 TOP3</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:24px;">
+      <tr style="border-bottom:1px solid #e5e7eb;background:#fffbeb;">
+        <td style="padding:10px 4px;width:15%;"><span style="background:#d4a017;color:#1e3a5f;font-size:11px;font-weight:bold;padding:2px 8px;border-radius:20px;">🏆 1位</span></td>
+        <td style="padding:10px 4px;font-weight:bold;color:#1e3a5f;">${r1?.name ?? "不明"}</td>
+        <td style="padding:10px 4px;color:#555555;font-size:13px;">${result.rank1.reason}</td>
+      </tr>
+      <tr style="border-bottom:1px solid #e5e7eb;">
+        <td style="padding:10px 4px;"><span style="background:#e5e7eb;color:#333333;font-size:11px;font-weight:bold;padding:2px 8px;border-radius:20px;">2位</span></td>
+        <td style="padding:10px 4px;font-weight:bold;color:#333333;">${r2?.name ?? "不明"}</td>
+        <td style="padding:10px 4px;color:#555555;font-size:13px;">${result.rank2.reason}</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 4px;"><span style="background:#e5e7eb;color:#333333;font-size:11px;font-weight:bold;padding:2px 8px;border-radius:20px;">3位</span></td>
+        <td style="padding:10px 4px;font-weight:bold;color:#333333;">${r3?.name ?? "不明"}</td>
+        <td style="padding:10px 4px;color:#555555;font-size:13px;">${result.rank3.reason}</td>
+      </tr>
+    </table>
+
+    <!-- アドバイス -->
+    <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">関達也からの3つのアドバイス</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:24px;">
+      ${adviceRows}
+    </table>
+
+    <!-- アクション -->
+    <div style="background:#fffbeb;border:1px solid #d4a017;border-radius:8px;padding:16px;font-size:13px;color:#333333;">
+      <strong style="color:#1e3a5f;">📌 アクション：</strong>
+      <a href="mailto:${userEmail}" style="color:#1e3a5f;font-weight:bold;">${userEmail}</a>
+      に直接ご連絡ください。
+    </div>
+
   </div>
+
+  <div style="background:#f9fafb;padding:14px 24px;text-align:center;border-top:1px solid #e5e7eb;">
+    <p style="font-size:11px;color:#9ca3af;margin:0;">ひとりビジネス適性診断 管理通知</p>
+  </div>
+</div>
 </body>
 </html>`;
 }
@@ -188,43 +233,25 @@ export async function POST(request: Request) {
       return Response.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    // まずユーザーのメアドへ送信を試みる（30秒タイムアウト）
+    // ドメイン未検証中は ADMIN_EMAIL 宛に診断結果＋ユーザー情報を転送する
     const { data, error } = await withTimeout(
       resend.emails.send({
         from: "ひとりビジネス適性診断 <onboarding@resend.dev>",
-        to: [email],
-        subject: "【診断結果】あなたに向いているひとりビジネスタイプが届きました",
-        html: buildResultHtml(lastName, result),
-      }),
-      SEND_TIMEOUT_MS
-    );
-
-    if (!error) {
-      // ユーザーへの送信成功
-      return Response.json({ success: true, emailSent: true, id: data?.id });
-    }
-
-    // ドメイン未検証などでユーザーへ送れない場合はオーナーにリード通知を送る（30秒タイムアウト）
-    console.warn(`[send-email] Cannot send to ${email}: ${error.message}`);
-
-    const { data: notifyData, error: notifyError } = await withTimeout(
-      resend.emails.send({
-        from: "ひとりビジネス適性診断 <onboarding@resend.dev>",
-        to: [OWNER_EMAIL],
+        to: [ADMIN_EMAIL],
         subject: `【新規リード】${lastName}さんが診断を完了しました`,
-        html: buildLeadNotificationHtml(lastName, email, result),
+        html: buildAdminNotificationHtml(lastName, email, result),
       }),
       SEND_TIMEOUT_MS
     );
 
-    if (notifyError) {
-      console.error("[send-email] Lead notification also failed:", notifyError);
+    if (error) {
+      console.error(`[send-email] Failed to send to ${ADMIN_EMAIL}:`, error);
     } else {
-      console.info(`[send-email] Lead notification sent to owner (id: ${notifyData?.id})`);
+      console.info(`[send-email] Notification sent to ${ADMIN_EMAIL} (id: ${data?.id})`);
     }
 
-    // フロントには成功を返す（リード取得が主目的）
-    return Response.json({ success: true, emailSent: false, leadNotified: !notifyError });
+    // フロントには常に成功を返す（リード取得が主目的）
+    return Response.json({ success: true, notified: !error });
   } catch (err) {
     console.error("[send-email] Unexpected error:", err);
     return Response.json({ error: "メール送信中にエラーが発生しました" }, { status: 500 });
