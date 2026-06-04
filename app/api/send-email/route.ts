@@ -57,13 +57,15 @@ function rankBlock(
 
 function buildResultHtml(lastName: string, result: DiagnosisResult): string {
   const adviceRows = result.advice
-    .map(
-      (adv, i) => `
-    <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;">
-      <span style="flex-shrink:0;width:26px;height:26px;background:#d4a017;color:#1e3a5f;border-radius:50%;display:inline-block;text-align:center;line-height:26px;font-size:13px;font-weight:bold;">${i + 1}</span>
-      <p style="font-size:14px;color:#ffffff;line-height:1.75;margin:0;">${adv}</p>
-    </div>`
-    )
+    .map((adv, i) => {
+      // Claudeが「1.」「①」などを先頭に付けて返す場合を除去
+      const text = adv.replace(/^[①②③1-9０-９][.．。）\)]\s*/, "").trim();
+      return `
+    <div style="display:flex;gap:14px;margin-bottom:16px;align-items:flex-start;">
+      <span style="flex-shrink:0;width:28px;height:28px;background:#d4a017;color:#1e3a5f;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;line-height:1;">${i + 1}</span>
+      <p style="font-size:14px;color:#ffffff;line-height:1.75;margin:4px 0 0;">${text}</p>
+    </div>`;
+    })
     .join("");
 
   return `<!DOCTYPE html>
@@ -112,11 +114,9 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
 
       <!-- プロフィール -->
       <div style="border-top:1px solid #e5e7eb;padding-top:20px;">
-        <p style="font-size:13px;font-weight:bold;color:#1e3a5f;margin:0 0 8px;">関達也 プロフィール</p>
+        <p style="font-size:13px;font-weight:bold;color:#1e3a5f;margin:0 0 8px;">監修者：関達也（ひとり起業コンサル）</p>
         <p style="font-size:12px;color:#555555;line-height:1.85;margin:0;">
-          1994年、24歳で独立。飲食・物販・サービス業・教育事業など11種のひとりビジネスを実践。
-          ドロップシッピング初年4,645万円、教材販売8,400万円超、メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。
-          「せき塾」「MIB」など3,000名以上のひとり起業家を直接サポート。
+          24歳で独立、31年。物販・サービス業・教育事業など11種のビジネスを実践。PC1台のひとりビジネスで1億円を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上のひとり起業家を直接サポートしてきた関達也が設計した診断です。
         </p>
       </div>
     </div>
