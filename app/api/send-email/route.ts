@@ -131,11 +131,36 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
 </html>`;
 }
 
+const Q_LABELS: Record<string, string> = {
+  q1:       "Q1. 今の状況",
+  q2_choice:"Q2. 現在の仕事・職種",
+  q2_text:  "Q2. 職種の詳細",
+  q3_choice:"Q3. 得意なこと",
+  q3_text:  "Q3. 得意の詳細",
+  q4:       "Q4. 収入の目標",
+  q5:       "Q5. ビジネスに求めるもの",
+  q6:       "Q6. 場所・時間の自由",
+  q7:       "Q7. 初期資金",
+  q8:       "Q8. 月々の予算",
+  q9:       "Q9. 週の使える時間",
+  q10:      "Q10. 顔出し・実名",
+  q11:      "Q11. 人との関わり",
+  q12:      "Q12. AIへの関心",
+};
+
+const Q_ORDER = [
+  "q1",
+  "q2_choice","q2_text",
+  "q3_choice","q3_text",
+  "q4","q5","q6","q7","q8","q9","q10","q11","q12",
+];
+
 // 管理者（ADMIN_EMAIL）宛の通知メール：ユーザー情報＋診断結果を一覧表示
 function buildAdminNotificationHtml(
   lastName: string,
   userEmail: string,
-  result: DiagnosisResult
+  result: DiagnosisResult,
+  answers: Record<string, string>
 ): string {
   const r1 = businessTypes.find((b) => b.id === result.rank1.typeId);
   const r2 = businessTypes.find((b) => b.id === result.rank2.typeId);
@@ -198,6 +223,21 @@ function buildAdminNotificationHtml(
       </tr>
     </table>
 
+    <!-- 診断回答 -->
+    <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">診断回答（全12問）</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px;">
+      ${Q_ORDER
+        .filter((key) => answers[key])
+        .map((key, idx, arr) => {
+          const isLast = idx === arr.length - 1;
+          return `<tr style="border-bottom:${isLast ? "none" : "1px solid #e5e7eb"};">
+            <td style="padding:9px 6px;color:#555555;width:36%;vertical-align:top;white-space:nowrap;">${Q_LABELS[key] ?? key}</td>
+            <td style="padding:9px 6px;color:#333333;">${answers[key]}</td>
+          </tr>`;
+        })
+        .join("")}
+    </table>
+
     <!-- アドバイス -->
     <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">関達也からの3つのアドバイス</h2>
     <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:24px;">
@@ -223,23 +263,24 @@ function buildAdminNotificationHtml(
 
 export async function POST(request: Request) {
   try {
-    const { lastName, email, result } = (await request.json()) as {
+    const { lastName, email, result, answers = {} } = (await request.json()) as {
       lastName: string;
       email: string;
       result: DiagnosisResult;
+      answers?: Record<string, string>;
     };
 
     if (!lastName || !email || !result) {
       return Response.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    // ドメイン未検証中は ADMIN_EMAIL 宛に診断結果＋ユーザー情報を転送する
+    // ADMIN_EMAIL 宛に診断結果＋ユーザー情報＋全回答を転送する
     const { data, error } = await withTimeout(
       resend.emails.send({
-        from: "ひとりビジネス適性診断 <onboarding@resend.dev>",
+        from: "ひとりビジネス適性診断（関達也） <info@sekitatsuya.com>",
         to: [ADMIN_EMAIL],
         subject: `【新規リード】${lastName}さんが診断を完了しました`,
-        html: buildAdminNotificationHtml(lastName, email, result),
+        html: buildAdminNotificationHtml(lastName, email, result, answers),
       }),
       SEND_TIMEOUT_MS
     );

@@ -161,7 +161,12 @@ export default function ResultPage() {
       await fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lastName: lastName.trim(), email: email.trim(), result }),
+        body: JSON.stringify({
+          lastName: lastName.trim(),
+          email: email.trim(),
+          result,
+          answers: JSON.parse(localStorage.getItem("diagnosisAnswers") ?? "{}"),
+        }),
       });
       // メール送信の成否に関わらず全結果を表示する（リード取得が目的）
       setPhase("full");
