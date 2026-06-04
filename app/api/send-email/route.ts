@@ -116,13 +116,22 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
       <div style="border-top:1px solid #e5e7eb;padding-top:20px;">
         <p style="font-size:13px;font-weight:bold;color:#1e3a5f;margin:0 0 8px;">監修者：関達也（ひとり起業コンサル）</p>
         <p style="font-size:12px;color:#555555;line-height:1.85;margin:0;">
-          24歳で独立、31年。物販・サービス業・教育事業など11種のビジネスを実践。PC1台のひとりビジネスで1億円を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上のひとり起業家を直接サポートしてきた関達也が設計した診断です。
+          24歳で独立、31年。物販・サービス業・教育事業など11種のビジネスを実践。PC1台のひとりビジネスで1億円を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上を直接サポートしてきた関達也が設計した診断です。
         </p>
       </div>
     </div>
 
+    <!-- メルマガ案内 -->
+    <div style="background:#f0f7ff;border-top:1px solid #dbeafe;padding:20px 24px;">
+      <p style="font-size:12px;color:#555555;line-height:1.85;margin:0;">
+        本メールは、ひとりビジネス適性診断にご登録いただいた方にお送りしています。
+        関達也の無料メールマガジンでは、ひとり起業に役立つ情報を定期的にお届けします。
+        引き続きよろしくお願いいたします！
+      </p>
+    </div>
+
     <!-- フッター -->
-    <div style="background:#f9fafb;padding:16px 24px;text-align:center;border-top:1px solid #e5e7eb;">
+    <div style="background:#f9fafb;padding:14px 24px;text-align:center;border-top:1px solid #e5e7eb;">
       <p style="font-size:11px;color:#9ca3af;margin:0;">このメールは「ひとりビジネス適性診断」からお送りしています。</p>
     </div>
 
@@ -281,7 +290,7 @@ export async function POST(request: Request) {
       resend.emails.send({
         from: FROM,
         to: [email],
-        subject: "【診断結果】あなたに向いているひとりビジネスタイプが届きました",
+        subject: `【診断結果】${lastName}さんに向いているひとりビジネスタイプが届きました`,
         html: buildResultHtml(lastName, result),
       }),
       SEND_TIMEOUT_MS

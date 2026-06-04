@@ -71,7 +71,7 @@ export default function Home() {
         <div className="w-full bg-white/10 backdrop-blur-sm rounded-xl p-6 text-white">
           <h3 className="font-bold text-base mb-3">監修者：関達也（ひとり起業コンサル）</h3>
           <p className="text-blue-100 text-sm leading-relaxed">
-            24歳で独立、31年。物販・サービス業・教育事業など11種のビジネスを実践。PC1台のひとりビジネスで1億円を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上のひとり起業家を直接サポートしてきた関達也が設計した診断です。
+            24歳で独立、31年。物販・サービス業・教育事業など11種のビジネスを実践。PC1台のひとりビジネスで1億円を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上を直接サポートしてきた関達也が設計した診断です。
           </p>
         </div>
       </div>

@@ -32,7 +32,7 @@ export const questions: Question[] = [
     id: 3,
     block: "あなたはどんな人？",
     question: "得意なこと・詳しいことはありますか？",
-    note: "日本人は謙遜しがちですが「人より少し知っている」程度で十分です",
+    note: "「これくらい誰でも知ってる」が、実は誰かが今まさに必要としている知識です。「人より少し知っている」程度で十分。",
     type: "single_with_conditional_text",
     options: [
       "仕事系（営業・医療・IT・教育など）",
