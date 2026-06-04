@@ -79,7 +79,7 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
     <!-- ヘッダー -->
     <div style="background:#1e3a5f;padding:30px 24px;text-align:center;">
       <h1 style="color:#ffffff;font-size:20px;margin:0 0 6px;font-weight:bold;">ひとりビジネス適性診断</h1>
-      <p style="color:#93c5fd;font-size:13px;margin:0;">独立31年・関達也監修</p>
+      <p style="color:#93c5fd;font-size:13px;margin:0;">ひとり起業コンサル・関達也監修｜独立31年・3,000名以上をサポート</p>
     </div>
 
     <!-- 本文 -->
