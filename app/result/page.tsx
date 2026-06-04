@@ -321,6 +321,8 @@ export default function ResultPage() {
               </p>
               <a
                 href="https://sekitatsuya.com/spot-consulting/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-block bg-[#d4a017] hover:bg-[#c49010] text-white font-bold px-8 py-4 rounded-xl transition-colors text-base shadow-md"
               >
                 個別相談はこちら →
@@ -328,12 +330,9 @@ export default function ResultPage() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
-              <h3 className="text-[#1e3a5f] font-bold text-base mb-3">監修者：関達也</h3>
+              <h3 className="text-[#1e3a5f] font-bold text-base mb-3">監修者：関達也（ひとり起業コンサル）</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                1994年、24歳で独立。飲食・物販・サービス業・教育事業など11種のひとりビジネスを実践。
-                ドロップシッピングでは初年4,645万円、教材販売では8,400万円超を達成。
-                メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。
-                現在は「せき塾」「MIB」など3,000名以上のひとり起業家を直接サポート。
+                1994年、24歳で独立。物販・サービス業・教育事業など11種のビジネスを実践。ドロップシッピングでは初年4,645万円、教材販売では8,400万円超を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上のひとり起業家を直接サポートしてきた関達也が設計した診断です。
               </p>
             </div>
 
