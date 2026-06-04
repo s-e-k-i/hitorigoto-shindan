@@ -274,10 +274,29 @@ export async function POST(request: Request) {
       return Response.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    // ADMIN_EMAIL 宛に診断結果＋ユーザー情報＋全回答を転送する
-    const { data, error } = await withTimeout(
+    const FROM = "ひとりビジネス適性診断（関達也） <info@sekitatsuya.com>";
+
+    // ① ユーザーへ診断結果メールを送信
+    const { data: userData, error: userError } = await withTimeout(
       resend.emails.send({
-        from: "ひとりビジネス適性診断（関達也） <info@sekitatsuya.com>",
+        from: FROM,
+        to: [email],
+        subject: "【診断結果】あなたに向いているひとりビジネスタイプが届きました",
+        html: buildResultHtml(lastName, result),
+      }),
+      SEND_TIMEOUT_MS
+    );
+
+    if (userError) {
+      console.error(`[send-email] Failed to send to user ${email}:`, userError);
+    } else {
+      console.info(`[send-email] Result sent to ${email} (id: ${userData?.id})`);
+    }
+
+    // ② 管理者へリード通知メールを送信（並行）
+    const { data: adminData, error: adminError } = await withTimeout(
+      resend.emails.send({
+        from: FROM,
         to: [ADMIN_EMAIL],
         subject: `【新規リード】${lastName}さんが診断を完了しました`,
         html: buildAdminNotificationHtml(lastName, email, result, answers),
@@ -285,14 +304,14 @@ export async function POST(request: Request) {
       SEND_TIMEOUT_MS
     );
 
-    if (error) {
-      console.error(`[send-email] Failed to send to ${ADMIN_EMAIL}:`, error);
+    if (adminError) {
+      console.error(`[send-email] Failed to send to admin ${ADMIN_EMAIL}:`, adminError);
     } else {
-      console.info(`[send-email] Notification sent to ${ADMIN_EMAIL} (id: ${data?.id})`);
+      console.info(`[send-email] Notification sent to ${ADMIN_EMAIL} (id: ${adminData?.id})`);
     }
 
     // フロントには常に成功を返す（リード取得が主目的）
-    return Response.json({ success: true, notified: !error });
+    return Response.json({ success: true, emailSent: !userError, adminNotified: !adminError });
   } catch (err) {
     console.error("[send-email] Unexpected error:", err);
     return Response.json({ error: "メール送信中にエラーが発生しました" }, { status: 500 });
