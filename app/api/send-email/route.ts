@@ -103,11 +103,13 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error("Resend error:", error);
-      return Response.json({ error: "メール送信に失敗しました" }, { status: 500 });
+      // ドメイン未検証などの制限はサーバーログに記録し、フロントには成功を返す
+      // （リード取得が主目的のためメール送信失敗で全結果表示をブロックしない）
+      console.warn("Resend warning (email not sent):", error);
+      return Response.json({ success: true, emailSent: false, warning: error.message });
     }
 
-    return Response.json({ success: true, id: data?.id });
+    return Response.json({ success: true, emailSent: true, id: data?.id });
   } catch (err) {
     console.error("Send-email error:", err);
     return Response.json(

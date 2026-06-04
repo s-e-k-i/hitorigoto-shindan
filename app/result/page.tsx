@@ -40,13 +40,11 @@ const scalabilityScore: Record<string, number> = {
 };
 
 function TypeCard({
-  rank,
   rankLabel,
   bt,
   reason,
   featured,
 }: {
-  rank: number;
   rankLabel: string;
   bt: BusinessType;
   reason: string;
@@ -63,9 +61,7 @@ function TypeCard({
       <div className="flex items-center gap-2 mb-3">
         <span
           className={`text-xs font-bold px-3 py-1 rounded-full ${
-            featured
-              ? "bg-[#d4a017] text-[#1e3a5f]"
-              : "bg-gray-100 text-gray-600"
+            featured ? "bg-[#d4a017] text-[#1e3a5f]" : "bg-gray-100 text-gray-600"
           }`}
         >
           {rankLabel}
@@ -83,12 +79,7 @@ function TypeCard({
         {reason}
       </p>
 
-      {/* Scores */}
-      <div
-        className={`rounded-xl p-4 space-y-2 text-xs ${
-          featured ? "bg-white/10" : "bg-gray-50"
-        }`}
-      >
+      <div className={`rounded-xl p-4 space-y-2 text-xs ${featured ? "bg-white/10" : "bg-gray-50"}`}>
         <div className="flex items-center justify-between">
           <span className={featured ? "text-blue-200" : "text-gray-500"}>即金性</span>
           <div className="flex items-center gap-2">
@@ -115,17 +106,12 @@ function TypeCard({
         </div>
       </div>
 
-      {/* Seki comment */}
       <div
-        className={`mt-4 rounded-xl p-4 text-xs leading-relaxed border-l-4 ${
-          featured
-            ? "bg-white/10 border-[#d4a017] text-blue-100"
-            : "bg-amber-50 border-[#d4a017] text-gray-700"
+        className={`mt-4 rounded-xl p-4 text-xs leading-relaxed border-l-4 border-[#d4a017] ${
+          featured ? "bg-white/10 text-blue-100" : "bg-amber-50 text-gray-700"
         }`}
       >
-        <p className={`font-bold text-xs mb-1 ${featured ? "text-[#d4a017]" : "text-[#d4a017]"}`}>
-          関達也のコメント
-        </p>
+        <p className="font-bold text-xs mb-1 text-[#d4a017]">関達也のコメント</p>
         「{bt.sekiComment}」
       </div>
     </div>
@@ -172,16 +158,17 @@ export default function ResultPage() {
     setIsSubmitting(true);
     setSubmitError("");
     try {
-      const res = await fetch("/api/send-email", {
+      await fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ lastName: lastName.trim(), email: email.trim(), result }),
       });
-      if (!res.ok) throw new Error("Email error");
+      // メール送信の成否に関わらず全結果を表示する（リード取得が目的）
       setPhase("full");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
-      setSubmitError("メール送信中にエラーが発生しました。もう一度お試しください。");
+      // ネットワークエラーのみ表示。その他は結果を表示して続行。
+      setSubmitError("通信エラーが発生しました。再度お試しください。");
     } finally {
       setIsSubmitting(false);
     }
@@ -196,7 +183,8 @@ export default function ResultPage() {
       </div>
 
       <div className="mx-auto max-w-2xl px-4 py-8 space-y-6">
-        {/* ===== PHASE: peek / full ===== */}
+
+        {/* 1位カード（常時表示） */}
         {rank1Type && (
           <div>
             {phase !== "full" && (
@@ -205,7 +193,6 @@ export default function ResultPage() {
               </p>
             )}
             <TypeCard
-              rank={1}
               rankLabel="🏆 1位"
               bt={rank1Type}
               reason={result.rank1.reason}
@@ -214,64 +201,39 @@ export default function ResultPage() {
           </div>
         )}
 
-        {/* Rank 2 & 3 – blurred in peek phase */}
-        <div className={phase !== "full" ? "relative" : ""}>
-          {phase !== "full" && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-gray-50/80 to-gray-50 rounded-2xl">
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 text-center max-w-sm mx-4">
-                <p className="text-[#1e3a5f] font-bold text-base mb-1">
-                  詳しい分析と関達也からの
-                  <br />
-                  3つのアドバイスを無料で受け取りますか？
-                </p>
-                <p className="text-gray-500 text-xs mb-4">
-                  2位・3位のタイプも表示されます
-                </p>
-                <button
-                  onClick={() => {
-                    setPhase("email");
-                    setTimeout(() => {
-                      document
-                        .getElementById("email-form")
-                        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }, 100);
-                  }}
-                  className="w-full bg-[#d4a017] hover:bg-[#c49010] text-white font-bold py-3 rounded-xl transition-colors text-sm"
-                >
-                  無料で全結果を受け取る →
-                </button>
-              </div>
-            </div>
-          )}
+        {/* ===== peek フェーズ：CTAボックス（1位直下・スクロール不要） ===== */}
+        {phase === "peek" && (
+          <div className="bg-white rounded-2xl border-2 border-[#d4a017] shadow-md p-6 text-center">
+            <p className="text-[#1e3a5f] font-bold text-base mb-1 leading-snug">
+              詳しい分析と関達也からの
+              <br />
+              3つのアドバイスを無料で受け取りますか？
+            </p>
+            <p className="text-gray-500 text-xs mb-5">2位・3位のタイプも表示されます</p>
+            <button
+              onClick={() => setPhase("email")}
+              className="w-full bg-[#d4a017] hover:bg-[#c49010] text-white font-bold py-3.5 rounded-xl transition-colors text-sm"
+            >
+              無料で全結果を受け取る →
+            </button>
+          </div>
+        )}
 
-          <div className={`space-y-4 ${phase !== "full" ? "blur-sm pointer-events-none select-none" : ""}`}>
+        {/* 2位・3位（peekではぼかし、fullでは通常表示） */}
+        {phase !== "email" && (
+          <div className={`space-y-4 ${phase === "peek" ? "opacity-40 blur-sm pointer-events-none select-none" : ""}`}>
             {rank2Type && (
-              <TypeCard
-                rank={2}
-                rankLabel="2位"
-                bt={rank2Type}
-                reason={result.rank2.reason}
-              />
+              <TypeCard rankLabel="2位" bt={rank2Type} reason={result.rank2.reason} />
             )}
             {rank3Type && (
-              <TypeCard
-                rank={3}
-                rankLabel="3位"
-                bt={rank3Type}
-                reason={result.rank3.reason}
-              />
+              <TypeCard rankLabel="3位" bt={rank3Type} reason={result.rank3.reason} />
             )}
-            {/* Spacer so overlay has height */}
-            {phase !== "full" && <div className="h-32" />}
           </div>
-        </div>
+        )}
 
-        {/* ===== PHASE: email form ===== */}
+        {/* ===== email フェーズ：入力フォーム ===== */}
         {phase === "email" && (
-          <div
-            id="email-form"
-            className="bg-white rounded-2xl border-2 border-[#d4a017] shadow-md p-6 sm:p-8 scroll-mt-4"
-          >
+          <div className="bg-white rounded-2xl border-2 border-[#d4a017] shadow-md p-6 sm:p-8">
             <h2 className="text-[#1e3a5f] text-lg font-bold mb-1">
               無料で全結果を受け取る
             </h2>
@@ -329,10 +291,9 @@ export default function ResultPage() {
           </div>
         )}
 
-        {/* ===== PHASE: full – advice + profile + CTA ===== */}
+        {/* ===== full フェーズ：アドバイス・CTA・プロフィール ===== */}
         {phase === "full" && (
           <>
-            {/* Advice */}
             <div className="bg-[#1e3a5f] rounded-2xl p-6 sm:p-8">
               <h2 className="text-white text-lg font-bold mb-5">
                 関達也からの3つのアドバイス
@@ -343,15 +304,12 @@ export default function ResultPage() {
                     <div className="flex-shrink-0 w-8 h-8 bg-[#d4a017] rounded-full flex items-center justify-center text-[#1e3a5f] font-bold text-sm">
                       {i + 1}
                     </div>
-                    <p className="text-blue-100 text-sm leading-relaxed pt-1">
-                      {adv}
-                    </p>
+                    <p className="text-blue-100 text-sm leading-relaxed pt-1">{adv}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* CTA */}
             <div className="bg-amber-50 border-2 border-[#d4a017] rounded-2xl p-6 text-center">
               <h3 className="text-[#1e3a5f] font-bold text-lg mb-2">
                 次のステップ：個別相談（無料）
@@ -369,11 +327,8 @@ export default function ResultPage() {
               </a>
             </div>
 
-            {/* Profile */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
-              <h3 className="text-[#1e3a5f] font-bold text-base mb-3">
-                監修者：関達也
-              </h3>
+              <h3 className="text-[#1e3a5f] font-bold text-base mb-3">監修者：関達也</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
                 1993年、26歳で独立。飲食・物販・サービス業・教育事業など11種のひとりビジネスを実践。
                 ドロップシッピングでは初年4,645万円、教材販売では8,400万円超を達成。
@@ -382,7 +337,6 @@ export default function ResultPage() {
               </p>
             </div>
 
-            {/* Restart */}
             <div className="text-center pb-4">
               <button
                 onClick={() => {
