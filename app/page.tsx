@@ -1,65 +1,80 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="min-h-screen bg-gradient-to-b from-[#1e3a5f] to-[#2d5a8e]">
+      <div className="mx-auto max-w-2xl px-4 py-16 flex flex-col items-center">
+        {/* Badge */}
+        <div className="mb-6">
+          <span className="bg-[#d4a017] text-[#1e3a5f] text-sm font-bold px-4 py-1.5 rounded-full">
+            無料診断 · 約3分で完了
+          </span>
+        </div>
+
+        {/* Title */}
+        <h1 className="text-center text-white font-bold leading-tight mb-3">
+          <span className="block text-4xl sm:text-5xl">ひとりビジネス</span>
+          <span className="block text-4xl sm:text-5xl">適性診断</span>
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-center text-blue-200 text-sm sm:text-base mb-10 leading-relaxed">
+          独立31年・11種のビジネスを実践し、
+          <br className="hidden sm:block" />
+          3,000名以上を直接サポートしてきた
+          <br />
+          <span className="text-white font-bold">関達也</span>が監修
+        </p>
+
+        {/* Card */}
+        <div className="w-full bg-white rounded-2xl shadow-2xl p-8 sm:p-10 mb-8">
+          <h2 className="text-[#1e3a5f] text-xl font-bold mb-2 text-center">
+            あなたに向いているひとりビジネスはどれ？
+          </h2>
+          <p className="text-gray-500 text-sm text-center mb-8">
+            12問に答えるだけでAIが診断します
+          </p>
+
+          <ul className="space-y-4 mb-8">
+            <li className="flex items-start gap-3">
+              <span className="text-[#d4a017] text-xl font-bold mt-0.5">✓</span>
+              <div>
+                <p className="text-gray-800 font-semibold">選択肢を選ぶだけ・約3分</p>
+                <p className="text-gray-500 text-sm">難しい記入は不要です</p>
+              </div>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-[#d4a017] text-xl font-bold mt-0.5">✓</span>
+              <div>
+                <p className="text-gray-800 font-semibold">11種のビジネスタイプから最適解を提案</p>
+                <p className="text-gray-500 text-sm">あなたの状況・スキル・目標に合わせて分析</p>
+              </div>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-[#d4a017] text-xl font-bold mt-0.5">✓</span>
+              <div>
+                <p className="text-gray-800 font-semibold">関達也からの個別アドバイス3つ付き</p>
+                <p className="text-gray-500 text-sm">あなたの回答をAIが分析し、今すぐできる行動を提案</p>
+              </div>
+            </li>
+          </ul>
+
+          <Link
+            href="/diagnosis"
+            className="block w-full bg-[#1e3a5f] hover:bg-[#2d5a8e] text-white text-center text-lg font-bold py-4 rounded-xl transition-colors duration-200 shadow-md"
+          >
+            診断を始める（無料・3分）
+          </Link>
+        </div>
+
+        {/* Profile */}
+        <div className="w-full bg-white/10 backdrop-blur-sm rounded-xl p-6 text-white">
+          <h3 className="font-bold text-base mb-3">監修者：関達也とは</h3>
+          <p className="text-blue-100 text-sm leading-relaxed">
+            独立31年・物販・ドロップシッピング・教育・コミュニティ運営など11種のビジネスをリアルからネットまで自ら実践し、3,000名以上のひとり起業を直接サポートしてきた関達也が設計した診断です。
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
