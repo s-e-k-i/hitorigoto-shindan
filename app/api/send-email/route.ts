@@ -22,11 +22,11 @@ function rankBlock(
   label: string,
   typeId: number,
   reason: string,
-  featured: boolean
+  featured: boolean,
+  sekiComment?: string
 ): string {
   const bt = businessTypes.find((b) => b.id === typeId);
   if (!bt) return "";
-  // featured（ネイビー背景）は白系テキスト、通常は指定カラーを使用
   const bg          = featured ? "#1e3a5f" : "#ffffff";
   const border      = featured ? "none" : "1px solid #e5e7eb";
   const nameColor   = featured ? "#ffffff" : "#1e3a5f";
@@ -37,6 +37,8 @@ function rankBlock(
   const commentColor= featured ? "#ffffff" : "#333333";
   const badgeBg     = featured ? "#d4a017" : "#e5e7eb";
   const badgeColor  = featured ? "#1e3a5f" : "#333333";
+  // AI生成のsekiCommentがあれば優先、なければ固定コメントをフォールバック
+  const displayComment = sekiComment ?? bt.sekiComment;
   return `
   <div style="background:${bg};border:${border};border-radius:12px;padding:20px;margin-bottom:16px;">
     <div style="margin-bottom:10px;">
@@ -50,7 +52,7 @@ function rankBlock(
     </div>
     <div style="margin-top:10px;border-left:3px solid #d4a017;padding-left:10px;font-size:12px;color:${commentColor};line-height:1.75;">
       <strong style="color:#d4a017;display:block;margin-bottom:4px;">関達也のコメント</strong>
-      「${bt.sekiComment}」
+      「${displayComment}」
     </div>
   </div>`;
 }
@@ -58,11 +60,10 @@ function rankBlock(
 function buildResultHtml(lastName: string, result: DiagnosisResult): string {
   const adviceRows = result.advice
     .map((adv, i) => {
-      // Claudeが「1.」「①」などを先頭に付けて返す場合を除去
       const text = adv.replace(/^[①②③1-9０-９][.．。）\)]\s*/, "").trim();
       return `
-    <div style="display:flex;gap:14px;margin-bottom:16px;align-items:flex-start;">
-      <span style="flex-shrink:0;width:28px;height:28px;background:#d4a017;color:#1e3a5f;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:bold;line-height:1;">${i + 1}</span>
+    <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;background:#d4a017;color:#fff;border-radius:50%;font-weight:bold;font-size:14px;flex-shrink:0;">${i + 1}</span>
       <p style="font-size:14px;color:#ffffff;line-height:1.75;margin:4px 0 0;">${text}</p>
     </div>`;
     })
@@ -91,9 +92,9 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
 
       <!-- 診断結果 1〜3位 -->
       <h2 style="font-size:16px;color:#1e3a5f;margin:0 0 14px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">診断結果</h2>
-      ${rankBlock("🏆 1位", result.rank1.typeId, result.rank1.reason, true)}
-      ${rankBlock("2位", result.rank2.typeId, result.rank2.reason, false)}
-      ${rankBlock("3位", result.rank3.typeId, result.rank3.reason, false)}
+      ${rankBlock("🏆 1位", result.rank1.typeId, result.rank1.reason, true, result.rank1.sekiComment)}
+      ${rankBlock("2位", result.rank2.typeId, result.rank2.reason, false, result.rank2.sekiComment)}
+      ${rankBlock("3位", result.rank3.typeId, result.rank3.reason, false, result.rank3.sekiComment)}
 
       <!-- 関達也からのアドバイス -->
       <div style="background:#1e3a5f;border-radius:12px;padding:24px;margin:24px 0;">
@@ -123,11 +124,9 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
 
     <!-- メルマガ案内 -->
     <div style="background:#f0f7ff;border-top:1px solid #dbeafe;padding:20px 24px;">
-      <p style="font-size:12px;color:#555555;line-height:1.85;margin:0;">
-        本メールは、ひとりビジネス適性診断にご登録いただいた方にお送りしています。
-        関達也の無料メールマガジンでは、ひとり起業に役立つ情報を定期的にお届けします。
-        引き続きよろしくお願いいたします！
-      </p>
+      <p style="font-size:12px;color:#555555;margin:8px 0;">本メールは、ひとりビジネス適性診断にご登録いただいた方にお送りしています。</p>
+      <p style="font-size:12px;color:#555555;margin:8px 0;">関達也の無料メールマガジンでは、ひとり起業に役立つ情報を定期的にお届けします。</p>
+      <p style="font-size:12px;color:#555555;margin:8px 0;">引き続きよろしくお願いいたします！</p>
     </div>
 
     <!-- フッター -->

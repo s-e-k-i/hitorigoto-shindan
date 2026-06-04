@@ -306,16 +306,27 @@ export default function ResultPage() {
               <h2 className="text-white text-lg font-bold mb-5">
                 関達也からの3つのアドバイス
               </h2>
-              <div className="space-y-5">
+              <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                 {result.advice.map((adv, i) => {
-                  // Claudeが「1.」「①」などを先頭に付けて返す場合を除去
                   const text = adv.replace(/^[①②③1-9０-９][.．。）\)]\s*/, "").trim();
                   return (
-                    <div key={i} className="flex items-start gap-4">
-                      <span className="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#d4a017] text-[#1e3a5f] font-bold text-sm leading-none">
+                    <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "16px" }}>
+                      <span style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        minWidth: "32px",
+                        height: "32px",
+                        background: "#d4a017",
+                        color: "#fff",
+                        borderRadius: "50%",
+                        fontWeight: "bold",
+                        fontSize: "14px",
+                        flexShrink: 0,
+                      }}>
                         {i + 1}
                       </span>
-                      <p className="text-blue-100 text-sm leading-relaxed mt-1">{text}</p>
+                      <p style={{ margin: 0, paddingTop: "4px", fontSize: "14px", color: "rgba(219,234,254,1)", lineHeight: 1.7 }}>{text}</p>
                     </div>
                   );
                 })}
