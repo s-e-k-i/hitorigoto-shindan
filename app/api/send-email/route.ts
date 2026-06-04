@@ -6,6 +6,17 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Resend の onboarding@resend.dev が送信できる唯一のアドレス（ドメイン未検証時）
 const OWNER_EMAIL = "tatsu7676@gmail.com";
+const SEND_TIMEOUT_MS = 30_000;
+
+// Promise にタイムアウトを付与するヘルパー
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(`Resend timeout after ${ms}ms`)), ms)
+    ),
+  ]);
+}
 
 function rankBlock(
   label: string,
@@ -103,7 +114,7 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
       <div style="border-top:1px solid #e5e7eb;padding-top:20px;">
         <p style="font-size:13px;font-weight:bold;color:#1e3a5f;margin:0 0 8px;">関達也 プロフィール</p>
         <p style="font-size:12px;color:#555555;line-height:1.85;margin:0;">
-          1993年、26歳で独立。飲食・物販・サービス業・教育事業など11種のひとりビジネスを実践。
+          1994年、24歳で独立。飲食・物販・サービス業・教育事業など11種のひとりビジネスを実践。
           ドロップシッピング初年4,645万円、教材販売8,400万円超、メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。
           「せき塾」「MIB」など3,000名以上のひとり起業家を直接サポート。
         </p>
@@ -177,28 +188,34 @@ export async function POST(request: Request) {
       return Response.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    // まずユーザーのメアドへ送信を試みる
-    const { data, error } = await resend.emails.send({
-      from: "ひとりビジネス適性診断 <onboarding@resend.dev>",
-      to: [email],
-      subject: "【診断結果】あなたに向いているひとりビジネスタイプが届きました",
-      html: buildResultHtml(lastName, result),
-    });
+    // まずユーザーのメアドへ送信を試みる（30秒タイムアウト）
+    const { data, error } = await withTimeout(
+      resend.emails.send({
+        from: "ひとりビジネス適性診断 <onboarding@resend.dev>",
+        to: [email],
+        subject: "【診断結果】あなたに向いているひとりビジネスタイプが届きました",
+        html: buildResultHtml(lastName, result),
+      }),
+      SEND_TIMEOUT_MS
+    );
 
     if (!error) {
       // ユーザーへの送信成功
       return Response.json({ success: true, emailSent: true, id: data?.id });
     }
 
-    // ドメイン未検証などでユーザーへ送れない場合はオーナーにリード通知を送る
+    // ドメイン未検証などでユーザーへ送れない場合はオーナーにリード通知を送る（30秒タイムアウト）
     console.warn(`[send-email] Cannot send to ${email}: ${error.message}`);
 
-    const { data: notifyData, error: notifyError } = await resend.emails.send({
-      from: "ひとりビジネス適性診断 <onboarding@resend.dev>",
-      to: [OWNER_EMAIL],
-      subject: `【新規リード】${lastName}さんが診断を完了しました`,
-      html: buildLeadNotificationHtml(lastName, email, result),
-    });
+    const { data: notifyData, error: notifyError } = await withTimeout(
+      resend.emails.send({
+        from: "ひとりビジネス適性診断 <onboarding@resend.dev>",
+        to: [OWNER_EMAIL],
+        subject: `【新規リード】${lastName}さんが診断を完了しました`,
+        html: buildLeadNotificationHtml(lastName, email, result),
+      }),
+      SEND_TIMEOUT_MS
+    );
 
     if (notifyError) {
       console.error("[send-email] Lead notification also failed:", notifyError);

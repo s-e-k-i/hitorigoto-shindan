@@ -19,11 +19,11 @@ export default function Home() {
 
         {/* Subtitle */}
         <p className="text-center text-blue-200 text-sm sm:text-base mb-10 leading-relaxed">
-          独立31年・11種のビジネスを実践し、
-          <br className="hidden sm:block" />
-          3,000名以上を直接サポートしてきた
+          <span className="text-white font-bold">ひとり起業コンサル・関達也</span>が監修
           <br />
-          <span className="text-white font-bold">関達也</span>が監修
+          独立31年・11種のビジネスを実践し
+          <br />
+          3,000名以上を直接サポート
         </p>
 
         {/* Card */}
@@ -69,9 +69,9 @@ export default function Home() {
 
         {/* Profile */}
         <div className="w-full bg-white/10 backdrop-blur-sm rounded-xl p-6 text-white">
-          <h3 className="font-bold text-base mb-3">監修者：関達也とは</h3>
+          <h3 className="font-bold text-base mb-3">監修者：関達也（ひとり起業コンサル）</h3>
           <p className="text-blue-100 text-sm leading-relaxed">
-            独立31年・物販・ドロップシッピング・教育・コミュニティ運営など11種のビジネスをリアルからネットまで自ら実践し、3,000名以上のひとり起業を直接サポートしてきた関達也が設計した診断です。
+            1994年、24歳で独立。物販・サービス業・教育事業など11種のビジネスを実践。ドロップシッピングでは初年4,645万円、教材販売では8,400万円超を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上のひとり起業家を直接サポートしてきた。
           </p>
         </div>
       </div>
