@@ -19,7 +19,7 @@ export default function Home() {
 
         {/* Sub copy */}
         <p className="text-center text-blue-200 text-sm mb-4">
-          副業・起業・独立、あなたに合う働き方が見つかります
+          副業・起業・独立、あなたに合うひとりビジネスの形が見つかります
         </p>
 
         {/* Subtitle */}
