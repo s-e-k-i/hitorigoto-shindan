@@ -17,6 +17,11 @@ export default function Home() {
           <span className="block text-4xl sm:text-5xl">適性診断</span>
         </h1>
 
+        {/* Sub copy */}
+        <p className="text-center text-blue-200 text-sm mb-4">
+          副業・起業・独立、あなたに合う働き方が見つかります
+        </p>
+
         {/* Subtitle */}
         <p className="text-center text-blue-200 text-sm sm:text-base mb-10 leading-relaxed">
           <span className="text-white font-bold">ひとり起業コンサル・関達也</span>が監修
