@@ -313,7 +313,7 @@ export async function POST(request: Request) {
       resend.emails.send({
         from: FROM,
         to: [ADMIN_EMAIL],
-        subject: `【新規リード】${lastName}さんが診断を完了しました`,
+        subject: `【診断完了】${lastName}さんが診断を受けました`,
         html: buildAdminNotificationHtml(lastName, email, result, answers),
       }),
       SEND_TIMEOUT_MS

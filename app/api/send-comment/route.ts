@@ -5,8 +5,9 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "tatsu7676@gmail.com";
 
 export async function POST(request: Request) {
   try {
-    const { email, rank1TypeName, comment } = (await request.json()) as {
+    const { email, name, rank1TypeName, comment } = (await request.json()) as {
       email: string;
+      name: string;
       rank1TypeName: string;
       comment: string;
     };
@@ -32,6 +33,10 @@ export async function POST(request: Request) {
             <a href="mailto:${email}" style="color:#1e3a5f;">${email}</a>
           </td>
         </tr>
+        <tr style="border-bottom:1px solid #e5e7eb;">
+          <td style="padding:10px 4px;color:#555555;">お名前</td>
+          <td style="padding:10px 4px;font-weight:bold;color:#333333;">${name}</td>
+        </tr>
         <tr>
           <td style="padding:10px 4px;color:#555555;">診断結果1位</td>
           <td style="padding:10px 4px;font-weight:bold;color:#333333;">${rank1TypeName}</td>
@@ -52,7 +57,7 @@ export async function POST(request: Request) {
     const { error } = await resend.emails.send({
       from: "ひとりビジネス適性診断（関達也） <info@sekitatsuya.com>",
       to: [ADMIN_EMAIL],
-      subject: "【感想が届きました】ひとりビジネス適性診断",
+      subject: `【感想が届きました】${name}さんからひとりビジネス適性診断への感想`,
       html,
     });
 

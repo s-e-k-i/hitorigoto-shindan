@@ -391,6 +391,7 @@ export default function ResultPage() {
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify({
                         email,
+                        name: lastName,
                         rank1TypeName: rank1Type?.name ?? "不明",
                         comment: comment.trim(),
                       }),
