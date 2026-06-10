@@ -133,6 +133,7 @@ export default function ResultPage() {
   const [comment, setComment] = useState("");
   const [commentSubmitted, setCommentSubmitted] = useState(false);
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+  const [urlCopied, setUrlCopied] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("diagnosisResult");
@@ -158,6 +159,77 @@ export default function ResultPage() {
   const rank1Type = businessTypes.find((bt) => bt.id === result.rank1.typeId);
   const rank2Type = businessTypes.find((bt) => bt.id === result.rank2.typeId);
   const rank3Type = businessTypes.find((bt) => bt.id === result.rank3.typeId);
+
+  // ── シェア用テキスト・URL生成 ──────────────────────────────
+  const SITE_URL = "https://hitoribusiness-shindan.vercel.app";
+
+  const buildHashtags = (): string => {
+    const tags: string[] = ["#ひとりビジネス適性診断"];
+
+    // Q4/Q5 の回答からハッシュタグを判定
+    const answers: Record<string, string> = (() => {
+      try { return JSON.parse(localStorage.getItem("diagnosisAnswers") ?? "{}"); }
+      catch { return {}; }
+    })();
+    const q4 = (answers["q4"] ?? "").toLowerCase();
+    const q5 = (answers["q5"] ?? "").toLowerCase();
+    const combined = q4 + q5;
+    if (combined.includes("副収入") || combined.includes("お小遣い") || combined.includes("3万")) {
+      tags.push("#副業");
+    } else if (combined.includes("フリーランス") || combined.includes("在宅")) {
+      tags.push("#フリーランス");
+    } else if (combined.includes("独立") || combined.includes("起業") || combined.includes("50万")) {
+      tags.push("#ひとり起業");
+    } else {
+      tags.push("#ひとりビジネス");
+    }
+
+    // 1位タイプからハッシュタグ
+    const typeTagMap: Record<string, string> = {
+      "スキル提供タイプ": "#スキルで稼ぐ",
+      "教育・相談タイプ": "#コンサル",
+      "コンテンツ販売タイプ": "#コンテンツ販売",
+      "メディア・情報発信タイプ": "#情報発信",
+      "AI活用タイプ": "#AI副業",
+      "物販タイプ": "#物販",
+      "サービス提供タイプ": "#サービス業",
+      "マッチングタイプ": "#マッチングビジネス",
+      "イベントタイプ": "#セミナー",
+      "サブスクリプションタイプ": "#オンラインサロン",
+      "即金・立て直しタイプ": "#副業",
+    };
+    const typeTag = rank1Type ? typeTagMap[rank1Type.name] : undefined;
+    if (typeTag && !tags.includes(typeTag)) tags.push(typeTag);
+
+    return tags.slice(0, 3).join(" ");
+  };
+
+  const buildShareText = (): string => {
+    const typeName = rank1Type?.name ?? "診断完了";
+    const desc = (rank1Type?.description ?? "").slice(0, 30);
+    const hashtags = buildHashtags();
+    return `診断結果：${typeName}でした✨\n\n${desc}…\n\n▼ あなたのひとりビジネスタイプは？（無料・13問）\n${SITE_URL}\n\n${hashtags}`;
+  };
+
+  const buildLineText = (): string => {
+    const typeName = rank1Type?.name ?? "診断完了";
+    return `ひとりビジネス適性診断を受けました！\n私の結果は「${typeName}」でした😊\n\n13問で自分に合うビジネスタイプがわかります。\nよかったら受けてみて↓\n${SITE_URL}`;
+  };
+
+  const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(buildShareText())}`;
+  const lineUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(SITE_URL)}&text=${encodeURIComponent(buildLineText())}`;
+  const threadsUrl = `https://www.threads.net/intent/post?text=${encodeURIComponent(buildShareText())}`;
+
+  const handleCopyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(SITE_URL);
+      setUrlCopied(true);
+      setTimeout(() => setUrlCopied(false), 2000);
+    } catch {
+      // fallback
+    }
+  };
+  // ─────────────────────────────────────────────────────────────
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -365,6 +437,65 @@ export default function ResultPage() {
               <p className="text-gray-600 text-sm leading-relaxed">
                 24歳で独立、31年。物販・サービス業・教育事業など11種のビジネスを実践。PC1台のひとりビジネスで1億円を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上を直接サポートしてきた関達也が設計した診断です。
               </p>
+            </div>
+
+            {/* シェアセクション */}
+            <div className="rounded-2xl p-6" style={{ background: "linear-gradient(135deg, #ede9fe 0%, #dbeafe 100%)" }}>
+              <h3 className="text-[#1e3a5f] font-bold text-base mb-1">📣 診断結果をシェアする</h3>
+              <p className="text-gray-500 text-xs mb-5">あなたと同じ悩みを持つ人に届けてください</p>
+              <div className="grid grid-cols-2 gap-3">
+                {/* X */}
+                <a
+                  href={xUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ minHeight: "48px" }}
+                  className="flex items-center justify-center gap-2 bg-black hover:bg-gray-800 text-white text-sm font-bold rounded-xl transition-colors px-4 py-3"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  X でシェア
+                </a>
+                {/* LINE */}
+                <a
+                  href={lineUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ background: "#06C755", minHeight: "48px" }}
+                  className="flex items-center justify-center gap-2 text-white text-sm font-bold rounded-xl transition-colors px-4 py-3"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125zM14.225 12.548l-2.457-3.26a.634.634 0 0 0-.511-.257.628.628 0 0 0-.627.63v4.019c0 .344.28.629.627.629.345 0 .63-.285.63-.629v-2.024l2.457 3.261c.121.161.304.26.511.26.1 0 .198-.024.292-.07a.633.633 0 0 0 .337-.559V9.031a.63.63 0 0 0-.63-.629.628.628 0 0 0-.629.629zm-5.212 0V9.031a.629.629 0 0 0-1.258 0v4.649c0 .344.282.629.629.629h2.386c.346 0 .629-.285.629-.629a.628.628 0 0 0-.629-.629H9.013zm-4.02-3.518a.629.629 0 0 0-.627.629v4.019c0 .344.281.629.627.629.348 0 .63-.285.63-.629V9.659a.629.629 0 0 0-.63-.629zM12 0C5.373 0 0 4.975 0 11.11c0 5.454 4.456 10.024 10.498 10.924.409.089.961.272.961.272s-.038-.152-.055-.213c-.155-.576-.293-1.461-.293-1.461l-.051-.323s.049.002.111.002c.136 0 .262-.017.262-.017s2.099-.222 4.083-1.034c2.476-1.019 3.718-2.626 3.718-4.688 0-.462-.068-.91-.198-1.337z"/></svg>
+                  LINEでシェア
+                </a>
+                {/* Threads */}
+                <a
+                  href={threadsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ minHeight: "48px" }}
+                  className="flex items-center justify-center gap-2 bg-black hover:bg-gray-800 text-white text-sm font-bold rounded-xl transition-colors px-4 py-3"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.5 12.068v-.148c0-3.44.823-6.235 2.447-8.307C5.779 1.439 8.522.265 12.18.265c3.625 0 6.35 1.14 8.1 3.39 1.682 2.166 2.48 5.028 2.372 8.504a.89.89 0 0 1-.89.869.888.888 0 0 1-.868-.909c.096-3.045-.57-5.56-1.933-7.338C17.583 2.888 15.28 2.044 12.18 2.044c-3.143 0-5.469.876-6.909 2.603-1.381 1.656-2.05 4.037-2.05 6.94v.148c0 3.082.696 5.535 2.067 7.274 1.368 1.734 3.671 2.61 6.845 2.63h.054c2.56 0 4.416-.665 5.685-2.032 1.314-1.415 2.01-3.516 2.066-6.24H12.18v-.003c-.065.003-.13.003-.195.003a5.5 5.5 0 0 1-5.499-5.5 5.5 5.5 0 0 1 5.5-5.5c1.554 0 2.96.647 3.97 1.687.73-.443 1.59-.687 2.493-.687a5.5 5.5 0 0 1 5.5 5.5 5.43 5.43 0 0 1-.336 1.883h-.003c.185.48.282.998.282 1.54 0 2.37-.706 4.27-2.099 5.649-1.37 1.356-3.37 2.046-5.937 2.046z"/></svg>
+                  Threadsでシェア
+                </a>
+                {/* URLコピー */}
+                <button
+                  onClick={handleCopyUrl}
+                  style={{ minHeight: "48px" }}
+                  className="flex items-center justify-center gap-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-bold rounded-xl transition-colors px-4 py-3"
+                >
+                  {urlCopied ? (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                      コピーしました✓
+                    </>
+                  ) : (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                      URLをコピー
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
 
             {/* コメント送信フォーム */}
