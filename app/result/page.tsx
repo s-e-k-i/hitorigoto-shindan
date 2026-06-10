@@ -120,6 +120,8 @@ function TypeCard({
   );
 }
 
+const showConsulting = process.env.NEXT_PUBLIC_SHOW_CONSULTING !== "false";
+
 export default function ResultPage() {
   const router = useRouter();
   const [phase, setPhase] = useState<Phase>("peek");
@@ -128,6 +130,9 @@ export default function ResultPage() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [comment, setComment] = useState("");
+  const [commentSubmitted, setCommentSubmitted] = useState(false);
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("diagnosisResult");
@@ -334,30 +339,72 @@ export default function ResultPage() {
               </div>
             </div>
 
-            <div className="bg-amber-50 border-2 border-[#d4a017] rounded-2xl p-6 text-center">
-              <h3 className="text-[#1e3a5f] font-bold text-lg mb-2">
-                次のステップ：個別相談
-              </h3>
-              <p className="text-gray-600 text-sm mb-5 leading-relaxed">
-                診断結果をもとに、あなたに最適なスタートプランを
-                <br />
-                関達也が直接アドバイスします。
-              </p>
-              <a
-                href="https://sekitatsuya.com/spot-consulting/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-[#d4a017] hover:bg-[#c49010] text-white font-bold px-8 py-4 rounded-xl transition-colors text-base shadow-md"
-              >
-                個別相談はこちら →
-              </a>
-            </div>
+            {showConsulting && (
+              <div className="bg-amber-50 border-2 border-[#d4a017] rounded-2xl p-6 text-center">
+                <h3 className="text-[#1e3a5f] font-bold text-lg mb-2">
+                  次のステップ：個別相談
+                </h3>
+                <p className="text-gray-600 text-sm mb-5 leading-relaxed">
+                  診断結果をもとに、あなたに最適なスタートプランを
+                  <br />
+                  関達也が直接アドバイスします。
+                </p>
+                <a
+                  href="https://sekitatsuya.com/spot-consulting/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-[#d4a017] hover:bg-[#c49010] text-white font-bold px-8 py-4 rounded-xl transition-colors text-base shadow-md"
+                >
+                  個別相談はこちら →
+                </a>
+              </div>
+            )}
 
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <h3 className="text-[#1e3a5f] font-bold text-base mb-3">監修者：関達也（ひとり起業コンサル）</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
                 24歳で独立、31年。物販・サービス業・教育事業など11種のビジネスを実践。PC1台のひとりビジネスで1億円を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上を直接サポートしてきた関達也が設計した診断です。
               </p>
+            </div>
+
+            {/* コメント送信フォーム */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-6">
+              <h3 className="text-[#1e3a5f] font-bold text-base mb-1">
+                診断を受けてみての感想をお聞かせください
+              </h3>
+              <p className="text-gray-400 text-xs mb-4">匿名で送信されます（任意）</p>
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                disabled={commentSubmitted}
+                rows={4}
+                placeholder="率直な感想をお聞かせください"
+                className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#1e3a5f] focus:ring-1 focus:ring-[#1e3a5f] resize-none disabled:bg-gray-50 disabled:text-gray-400"
+              />
+              <button
+                onClick={async () => {
+                  if (!comment.trim() || isSubmittingComment || commentSubmitted) return;
+                  setIsSubmittingComment(true);
+                  try {
+                    await fetch("/api/send-comment", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        email,
+                        rank1TypeName: rank1Type?.name ?? "不明",
+                        comment: comment.trim(),
+                      }),
+                    });
+                    setCommentSubmitted(true);
+                  } finally {
+                    setIsSubmittingComment(false);
+                  }
+                }}
+                disabled={!comment.trim() || isSubmittingComment || commentSubmitted}
+                className="mt-3 w-full bg-[#1e3a5f] hover:bg-[#2d5a8e] disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-3 rounded-xl transition-colors text-sm"
+              >
+                {commentSubmitted ? "送信しました ✓" : isSubmittingComment ? "送信中..." : "感想を送る"}
+              </button>
             </div>
 
             <div className="text-center pb-4">

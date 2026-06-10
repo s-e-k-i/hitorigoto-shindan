@@ -108,6 +108,7 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
         ${adviceRows}
       </div>
 
+      ${process.env.NEXT_PUBLIC_SHOW_CONSULTING !== "false" ? `
       <!-- 個別相談CTA -->
       <div style="text-align:center;background:#fffbeb;border:2px solid #d4a017;border-radius:12px;padding:24px;margin-bottom:24px;">
         <p style="font-size:16px;font-weight:bold;color:#1e3a5f;margin:0 0 8px;">次のステップ：個別相談</p>
@@ -117,7 +118,7 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
         <a href="https://sekitatsuya.com/spot-consulting/" style="display:inline-block;background:#d4a017;color:#ffffff;font-size:14px;font-weight:bold;padding:13px 32px;border-radius:8px;text-decoration:none;">
           個別相談はこちら →
         </a>
-      </div>
+      </div>` : ""}
 
       <!-- プロフィール -->
       <div style="border-top:1px solid #e5e7eb;padding-top:20px;">
