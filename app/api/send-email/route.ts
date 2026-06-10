@@ -133,7 +133,7 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
     <div style="background:#f0f7ff;border-top:1px solid #dbeafe;padding:20px 24px;">
       <p style="font-size:12px;color:#555555;margin:8px 0;">本メールは、ひとりビジネス適性診断にご登録いただいた方にお送りしています。</p>
       <p style="font-size:12px;color:#555555;margin:8px 0;">関達也の無料メールマガジンでは、ひとり起業に役立つ情報を定期的にお届けします。</p>
-      <p style="font-size:12px;color:#555555;margin:8px 0;">引き続きよろしくお願いいたします！</p>
+      <p style="font-size:12px;color:#555555;margin:8px 0;">引き続きよろしくお願いいたします。</p>
     </div>
 
     <!-- フッター -->

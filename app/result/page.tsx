@@ -257,13 +257,13 @@ export default function ResultPage() {
             <form onSubmit={handleEmailSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  お名前（姓）<span className="text-red-500 ml-1">※必須</span>
+                  お名前（姓またはニックネーム）<span className="text-red-500 ml-1">※必須</span>
                 </label>
                 <input
                   type="text"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  placeholder="例：関"
+                  placeholder="例：山田 / たろう"
                   required
                   className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1e3a5f] focus:ring-1 focus:ring-[#1e3a5f]"
                 />
@@ -298,7 +298,7 @@ export default function ResultPage() {
               </button>
 
               <p className="text-xs text-gray-400 text-center leading-relaxed">
-                ご登録いただくと、関達也の無料メールマガジンも同時にお届けします。
+                ご登録いただいた方には、関達也の無料メールマガジンもお届けします。
               </p>
             </form>
           </div>
@@ -405,6 +405,11 @@ export default function ResultPage() {
               >
                 {commentSubmitted ? "送信しました ✓" : isSubmittingComment ? "送信中..." : "感想を送る"}
               </button>
+              {commentSubmitted && (
+                <p className="mt-3 text-sm text-green-600 font-medium text-center">
+                  感想を送信しました。ありがとうございます！
+                </p>
+              )}
             </div>
 
             <div className="text-center pb-4">
