@@ -200,6 +200,7 @@ export default function ResultPage() {
       "即金・立て直しタイプ": "#副業",
     };
     const typeTag = rank1Type ? typeTagMap[rank1Type.name] : undefined;
+    // 重複チェック（例：目的タグ #副業 とタイプタグ #副業 が同じ場合）
     if (typeTag && !tags.includes(typeTag)) tags.push(typeTag);
 
     return tags.slice(0, 3).join(" ");
@@ -207,9 +208,9 @@ export default function ResultPage() {
 
   const buildShareText = (): string => {
     const typeName = rank1Type?.name ?? "診断完了";
-    const desc = (rank1Type?.description ?? "").slice(0, 30);
+    const desc = rank1Type?.description ?? "";
     const hashtags = buildHashtags();
-    return `診断結果：${typeName}でした✨\n\n${desc}…\n\n▼ あなたのひとりビジネスタイプは？（無料・13問）\n${SITE_URL}\n\n${hashtags}`;
+    return `診断結果：${typeName}でした✨\n\n${desc}\n\n▼ あなたのひとりビジネスタイプは？（無料・13問）\n${SITE_URL}\n\n${hashtags}`;
   };
 
   const buildLineText = (): string => {
