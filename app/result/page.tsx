@@ -214,7 +214,7 @@ export default function ResultPage() {
   const rank3Type = businessTypes.find((bt) => bt.id === result.rank3.typeId);
 
   // ── シェア用テキスト・URL生成 ──────────────────────────────
-  const SITE_URL = "https://hitorigoto-shindan.vercel.app";
+  const SITE_URL = "https://hitoribusiness-shindan.vercel.app";
 
   const buildHashtags = (): string => {
     const tags: string[] = ["#ひとりビジネス適性診断"];
