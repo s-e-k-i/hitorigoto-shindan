@@ -4,7 +4,25 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "ひとりビジネス適性診断 | 関達也監修",
   description:
-    "独立31年・11種のビジネスを実践し、3,000名以上を直接サポートしてきた関達也が監修。15問に答えるだけで、あなたに向いているひとりビジネスタイプをAIが診断します。",
+    "独立31年・11種のビジネスを実践し、3,000名以上を直接サポートしてきた関達也が監修。15問に答えるだけで、あなたに向いているひとりビジネスのタイプがわかります。",
+  openGraph: {
+    title: "ひとりビジネス適性診断 | 関達也監修",
+    description:
+      "独立31年・11種のビジネスを実践し、3,000名以上を直接サポートしてきた関達也が監修。15問に答えるだけで、あなたに向いているひとりビジネスのタイプがわかります。",
+    url: "https://hitoribusiness-shindan.vercel.app",
+    images: [
+      {
+        url: "https://hitoribusiness-shindan.vercel.app/og-image.png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ひとりビジネス適性診断 | 関達也監修",
+    description:
+      "独立31年・11種のビジネスを実践し、3,000名以上を直接サポートしてきた関達也が監修。15問に答えるだけで、あなたに向いているひとりビジネスのタイプがわかります。",
+    images: ["https://hitoribusiness-shindan.vercel.app/og-image.png"],
+  },
 };
 
 export default function RootLayout({

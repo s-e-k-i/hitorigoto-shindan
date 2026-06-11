@@ -239,7 +239,7 @@ function buildAdminNotificationHtml(
     </table>
 
     <!-- 診断回答 -->
-    <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">診断回答（全12問）</h2>
+    <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">診断回答（全15問）</h2>
     <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px;">
       ${Q_ORDER
         .filter((key) => answers[key])
