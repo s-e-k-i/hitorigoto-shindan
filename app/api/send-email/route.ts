@@ -124,7 +124,7 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
       <div style="border-top:1px solid #e5e7eb;padding-top:20px;">
         <p style="font-size:13px;font-weight:bold;color:#1e3a5f;margin:0 0 8px;">監修者：関達也（ひとり起業コンサル）</p>
         <p style="font-size:12px;color:#555555;line-height:1.85;margin:0;">
-          24歳で独立、31年。物販・サービス業・教育事業など11種のビジネスを実践。PC1台のひとりビジネスで1億円を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上を直接サポートしてきた関達也が設計した診断です。
+          24歳で独立して31年。物販・サービス業・教育事業など11種のビジネスを実践。PC1台のひとりビジネスで1億円を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上を直接サポートしてきた関達也が設計した診断です。
         </p>
       </div>
     </div>

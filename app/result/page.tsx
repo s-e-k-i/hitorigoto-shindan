@@ -80,9 +80,11 @@ function TypeCard({
         {bt.description}
       </p>
 
-      <p className={`text-sm leading-relaxed mb-4 ${featured ? "text-blue-50" : "text-gray-700"}`}>
-        {reason}
-      </p>
+      {detailLevel !== "full" && (
+        <p className={`text-sm leading-relaxed mb-4 ${featured ? "text-blue-50" : "text-gray-700"}`}>
+          {reason}
+        </p>
+      )}
 
       {/* 特徴・向いている理由（partial / full で表示） */}
       {(detailLevel === "partial" || detailLevel === "full") && (
@@ -497,7 +499,7 @@ export default function ResultPage() {
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <h3 className="text-[#1e3a5f] font-bold text-base mb-3">監修者：関達也（ひとり起業コンサル）</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                24歳で独立、31年。物販・サービス業・教育事業など11種のビジネスを実践。PC1台のひとりビジネスで1億円を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上を直接サポートしてきた関達也が設計した診断です。
+                24歳で独立して31年。物販・サービス業・教育事業など11種のビジネスを実践。PC1台のひとりビジネスで1億円を達成。メルマガ10万部・ブログ100万人中9位・アフィリエイト日本一など多数の実績を持つ。3,000名以上を直接サポートしてきた関達也が設計した診断です。
               </p>
             </div>
 
