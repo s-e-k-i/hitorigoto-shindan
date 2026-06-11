@@ -7,6 +7,12 @@ export interface BusinessType {
   immediacy: string;
   entryBar: string;
   scalability: string;
+  feature: string;
+  suitableReason: string;
+  businessExamples: string;
+  firstStep: string;
+  pitfall: string;
+  adviceList: string[];
 }
 
 export interface Question {

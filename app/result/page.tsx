@@ -46,12 +46,14 @@ function TypeCard({
   reason,
   sekiComment,
   featured,
+  detailLevel,
 }: {
   rankLabel: string;
   bt: BusinessType;
   reason: string;
   sekiComment?: string;
   featured?: boolean;
+  detailLevel?: "partial" | "full";
 }) {
   return (
     <div
@@ -81,6 +83,20 @@ function TypeCard({
       <p className={`text-sm leading-relaxed mb-4 ${featured ? "text-blue-50" : "text-gray-700"}`}>
         {reason}
       </p>
+
+      {/* 特徴・向いている理由（partial / full で表示） */}
+      {(detailLevel === "partial" || detailLevel === "full") && (
+        <div className={`rounded-xl p-4 mb-4 space-y-3 text-sm ${featured ? "bg-white/10" : "bg-blue-50"}`}>
+          <div>
+            <p className={`text-xs font-bold mb-1 ${featured ? "text-[#d4a017]" : "text-[#1e3a5f]"}`}>特徴</p>
+            <p className={`leading-relaxed ${featured ? "text-blue-100" : "text-gray-700"}`}>{bt.feature}</p>
+          </div>
+          <div>
+            <p className={`text-xs font-bold mb-1 ${featured ? "text-[#d4a017]" : "text-[#1e3a5f]"}`}>向いている理由</p>
+            <p className={`leading-relaxed ${featured ? "text-blue-100" : "text-gray-700"}`}>{bt.suitableReason}</p>
+          </div>
+        </div>
+      )}
 
       <div className={`rounded-xl p-4 space-y-2 text-xs ${featured ? "bg-white/10" : "bg-gray-50"}`}>
         <div className="flex items-center justify-between">
@@ -117,6 +133,40 @@ function TypeCard({
         <p className="font-bold text-xs mb-1 text-[#d4a017]">関達也のコメント</p>
         「{sekiComment ?? bt.sekiComment}」
       </div>
+
+      {/* おすすめのビジネス例・最初にやること・つまずきやすい点・アドバイス（full のみ） */}
+      {detailLevel === "full" && (
+        <div className="mt-4 space-y-4">
+          <div className={`rounded-xl p-4 text-sm ${featured ? "bg-white/10" : "bg-gray-50"}`}>
+            <p className={`text-xs font-bold mb-2 ${featured ? "text-[#d4a017]" : "text-[#1e3a5f]"}`}>おすすめのビジネス例</p>
+            <p className={`leading-relaxed ${featured ? "text-blue-100" : "text-gray-700"}`}>{bt.businessExamples}</p>
+          </div>
+
+          <div className={`rounded-xl p-4 text-sm ${featured ? "bg-white/10" : "bg-green-50"}`}>
+            <p className={`text-xs font-bold mb-2 ${featured ? "text-[#d4a017]" : "text-green-700"}`}>最初にやること</p>
+            <p className={`leading-relaxed ${featured ? "text-blue-100" : "text-gray-700"}`}>{bt.firstStep}</p>
+          </div>
+
+          <div className={`rounded-xl p-4 text-sm ${featured ? "bg-white/10" : "bg-orange-50"}`}>
+            <p className={`text-xs font-bold mb-2 ${featured ? "text-[#d4a017]" : "text-orange-700"}`}>つまずきやすい点</p>
+            <p className={`leading-relaxed ${featured ? "text-blue-100" : "text-gray-700"}`}>{bt.pitfall}</p>
+          </div>
+
+          <div className={`rounded-xl p-4 text-sm ${featured ? "bg-white/10" : "bg-purple-50"}`}>
+            <p className={`text-xs font-bold mb-3 ${featured ? "text-[#d4a017]" : "text-purple-700"}`}>アドバイス</p>
+            <div className="space-y-2">
+              {bt.adviceList.map((adv, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <span className={`mt-0.5 w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold ${featured ? "bg-[#d4a017] text-[#1e3a5f]" : "bg-purple-200 text-purple-800"}`}>
+                    {i + 1}
+                  </span>
+                  <p className={`leading-relaxed ${featured ? "text-blue-100" : "text-gray-700"}`}>{adv}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -193,7 +243,7 @@ export default function ResultPage() {
       "メディア・情報発信タイプ": "#情報発信",
       "AI活用タイプ": "#AI副業",
       "物販タイプ": "#物販",
-      "サービス提供タイプ": "#サービス業",
+      "生活サポート・代行タイプ": "#サービス業",
       "マッチングタイプ": "#マッチングビジネス",
       "イベントタイプ": "#セミナー",
       "サブスクリプションタイプ": "#オンラインサロン",
@@ -210,12 +260,12 @@ export default function ResultPage() {
     const typeName = rank1Type?.name ?? "診断完了";
     const desc = rank1Type?.description ?? "";
     const hashtags = buildHashtags();
-    return `診断結果：${typeName}でした✨\n\n${desc}\n\n▼ あなたのひとりビジネスタイプは？（無料・13問）\n${SITE_URL}\n\n${hashtags}`;
+    return `診断結果：${typeName}でした✨\n\n${desc}\n\n▼ あなたのひとりビジネスタイプは？（無料・15問）\n${SITE_URL}\n\n${hashtags}`;
   };
 
   const buildLineText = (): string => {
     const typeName = rank1Type?.name ?? "診断完了";
-    return `ひとりビジネス適性診断を受けました！\n私の結果は「${typeName}」でした😊\n\n13問で自分に合うビジネスタイプがわかります。\nよかったら受けてみて↓\n${SITE_URL}`;
+    return `ひとりビジネス適性診断を受けました！\n私の結果は「${typeName}」でした😊\n\n15問で自分に合うビジネスタイプがわかります。\nよかったら受けてみて↓\n${SITE_URL}`;
   };
 
   // Threadsのintent URLは絵文字を◆に文字化けさせる既知の問題があるため
@@ -224,7 +274,7 @@ export default function ResultPage() {
     const typeName = rank1Type?.name ?? "診断完了";
     const desc = rank1Type?.description ?? "";
     const hashtags = buildHashtags();
-    return `診断結果：${typeName}でした！\n\n${desc}\n\n▼ あなたのひとりビジネスタイプは？（無料・13問）\n${SITE_URL}\n\n${hashtags}`;
+    return `診断結果：${typeName}でした！\n\n${desc}\n\n▼ あなたのひとりビジネスタイプは？（無料・15問）\n${SITE_URL}\n\n${hashtags}`;
   };
 
   const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(buildShareText())}`;
@@ -293,6 +343,7 @@ export default function ResultPage() {
               reason={result.rank1.reason}
               sekiComment={result.rank1.sekiComment}
               featured
+              detailLevel={phase === "full" ? "full" : "partial"}
             />
           </div>
         )}
@@ -310,7 +361,7 @@ export default function ResultPage() {
               onClick={() => setPhase("email")}
               className="w-full bg-[#d4a017] hover:bg-[#c49010] text-white font-bold py-3.5 rounded-xl transition-colors text-sm"
             >
-              無料で全結果を受け取る →
+              無料で詳しい診断結果を受け取る →
             </button>
           </div>
         )}
@@ -319,10 +370,10 @@ export default function ResultPage() {
         {phase !== "email" && (
           <div className={`space-y-4 ${phase === "peek" ? "opacity-40 blur-sm pointer-events-none select-none" : ""}`}>
             {rank2Type && (
-              <TypeCard rankLabel="2位" bt={rank2Type} reason={result.rank2.reason} sekiComment={result.rank2.sekiComment} />
+              <TypeCard rankLabel="2位" bt={rank2Type} reason={result.rank2.reason} sekiComment={result.rank2.sekiComment} detailLevel={phase === "full" ? "full" : undefined} />
             )}
             {rank3Type && (
-              <TypeCard rankLabel="3位" bt={rank3Type} reason={result.rank3.reason} sekiComment={result.rank3.sekiComment} />
+              <TypeCard rankLabel="3位" bt={rank3Type} reason={result.rank3.reason} sekiComment={result.rank3.sekiComment} detailLevel={phase === "full" ? "full" : undefined} />
             )}
           </div>
         )}
@@ -331,7 +382,7 @@ export default function ResultPage() {
         {phase === "email" && (
           <div className="bg-white rounded-2xl border-2 border-[#d4a017] shadow-md p-6 sm:p-8">
             <h2 className="text-[#1e3a5f] text-lg font-bold mb-1">
-              無料で全結果を受け取る
+              無料で詳しい診断結果を受け取る
             </h2>
             <p className="text-gray-500 text-sm mb-6">
               2位・3位の詳細と関達也からの3つのアドバイスをお届けします
@@ -377,7 +428,7 @@ export default function ResultPage() {
                 disabled={isSubmitting || !lastName.trim() || !email.trim()}
                 className="w-full bg-[#1e3a5f] hover:bg-[#2d5a8e] disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-colors text-base"
               >
-                {isSubmitting ? "送信中..." : "無料で全結果を受け取る"}
+                {isSubmitting ? "送信中..." : "無料で詳しい診断結果を受け取る"}
               </button>
 
               <p className="text-xs text-gray-400 text-center leading-relaxed">
