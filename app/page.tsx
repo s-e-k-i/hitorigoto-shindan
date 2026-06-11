@@ -37,7 +37,7 @@ export default function Home() {
             あなたに向いているひとりビジネスはどれ？
           </h2>
           <p className="text-gray-500 text-sm text-center mb-8">
-            13問に答えるだけでAIが診断します
+            15問に答えるだけでAIが診断します
           </p>
 
           <ul className="space-y-4 mb-8">
