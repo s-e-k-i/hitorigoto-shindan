@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface UserEntry {
   name: string;
@@ -61,6 +61,22 @@ export default function AdminPage() {
 
   const authHeader = { Authorization: `Bearer ${password}` };
 
+  // ページロード時にsessionStorageから認証済みパスワードを復元して自動フェッチ
+  useEffect(() => {
+    const saved = sessionStorage.getItem("admin_password");
+    if (!saved) return;
+    setPassword(saved);
+    setLoading(true);
+    fetch("/api/admin/users", { headers: { Authorization: `Bearer ${saved}` } })
+      .then((res) => {
+        if (!res.ok) { sessionStorage.removeItem("admin_password"); return null; }
+        return res.json();
+      })
+      .then((data) => { if (data) setUsers(data.users ?? []); })
+      .catch(() => sessionStorage.removeItem("admin_password"))
+      .finally(() => setLoading(false));
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -70,6 +86,7 @@ export default function AdminPage() {
       if (res.status === 401) { setError("パスワードが違います"); return; }
       if (!res.ok) { setError("データの取得に失敗しました"); return; }
       const data = await res.json();
+      sessionStorage.setItem("admin_password", password);
       setUsers(data.users ?? []);
     } catch {
       setError("通信エラーが発生しました");
@@ -114,6 +131,14 @@ export default function AdminPage() {
     if (!users || users.length === 0) return;
     generateCsv(users);
   };
+
+  if (users === null && loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-[#1e3a5f]/30 border-t-[#1e3a5f] rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (users === null) {
     return (
