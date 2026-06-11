@@ -1,6 +1,12 @@
 import { Resend } from "resend";
+import { Redis } from "@upstash/redis";
 import { businessTypes } from "@/lib/businessTypes";
 import { DiagnosisResult } from "@/types";
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+});
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -323,6 +329,19 @@ export async function POST(request: Request) {
       console.error(`[send-email] Failed to send to admin ${ADMIN_EMAIL}:`, adminError);
     } else {
       console.info(`[send-email] Notification sent to ${ADMIN_EMAIL} (id: ${adminData?.id})`);
+    }
+
+    // ③ KVにユーザーデータを保存
+    try {
+      const rank1Type = businessTypes.find((b) => b.id === result.rank1.typeId);
+      await redis.lpush("users", JSON.stringify({
+        name: lastName,
+        email,
+        registeredAt: new Date().toISOString(),
+        typeName: rank1Type?.name ?? "不明",
+      }));
+    } catch (kvErr) {
+      console.error("[send-email] KV save failed:", kvErr);
     }
 
     // フロントには常に成功を返す（リード取得が主目的）
