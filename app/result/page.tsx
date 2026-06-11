@@ -218,9 +218,18 @@ export default function ResultPage() {
     return `ひとりビジネス適性診断を受けました！\n私の結果は「${typeName}」でした😊\n\n13問で自分に合うビジネスタイプがわかります。\nよかったら受けてみて↓\n${SITE_URL}`;
   };
 
+  // Threadsのintent URLは絵文字を◆に文字化けさせる既知の問題があるため
+  // Threads専用テキストでは絵文字を除去する
+  const buildThreadsShareText = (): string => {
+    const typeName = rank1Type?.name ?? "診断完了";
+    const desc = rank1Type?.description ?? "";
+    const hashtags = buildHashtags();
+    return `診断結果：${typeName}でした！\n\n${desc}\n\n▼ あなたのひとりビジネスタイプは？（無料・13問）\n${SITE_URL}\n\n${hashtags}`;
+  };
+
   const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(buildShareText())}`;
   const lineUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(SITE_URL)}&text=${encodeURIComponent(buildLineText())}`;
-  const threadsUrl = `https://www.threads.net/intent/post?text=${encodeURIComponent(buildShareText())}`;
+  const threadsUrl = `https://www.threads.net/intent/post?text=${encodeURIComponent(buildThreadsShareText())}`;
 
   const handleCopyUrl = async () => {
     try {
