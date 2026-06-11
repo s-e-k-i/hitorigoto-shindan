@@ -9,10 +9,10 @@ export const metadata: Metadata = {
     title: "ひとりビジネス適性診断 | 関達也監修",
     description:
       "独立31年・11種のビジネスを実践し、3,000名以上を直接サポートしてきた関達也が監修。15問に答えるだけで、あなたに向いているひとりビジネスのタイプがわかります。",
-    url: "https://hitoribusiness-shindan.vercel.app",
+    url: "https://hitorigoto-shindan.vercel.app",
     images: [
       {
-        url: "https://hitoribusiness-shindan.vercel.app/og-image.png",
+        url: "https://hitorigoto-shindan.vercel.app/og-image.png",
       },
     ],
   },
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: "ひとりビジネス適性診断 | 関達也監修",
     description:
       "独立31年・11種のビジネスを実践し、3,000名以上を直接サポートしてきた関達也が監修。15問に答えるだけで、あなたに向いているひとりビジネスのタイプがわかります。",
-    images: ["https://hitoribusiness-shindan.vercel.app/og-image.png"],
+    images: ["https://hitorigoto-shindan.vercel.app/og-image.png"],
   },
 };
 
