@@ -565,15 +565,15 @@ export default function ResultPage() {
             {/* コメント送信フォーム */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6">
               <h3 className="text-[#1e3a5f] font-bold text-base mb-1">
-                診断を受けてみての感想をお聞かせください
+                診断を受けてみての感想・気になった点をお聞かせください
               </h3>
-              <p className="text-gray-400 text-xs mb-4">匿名で送信されます（任意）</p>
+              <p className="text-gray-400 text-xs mb-4">良かった点や、分かりにくかった点があれば教えてください（匿名・任意）</p>
               <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 disabled={commentSubmitted}
                 rows={4}
-                placeholder="率直な感想をお聞かせください"
+                placeholder="良かったこと、気になったこと、分かりにくかった点など"
                 className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#1e3a5f] focus:ring-1 focus:ring-[#1e3a5f] resize-none disabled:bg-gray-50 disabled:text-gray-400"
               />
               <button
