@@ -604,7 +604,7 @@ export default function ResultPage() {
               </button>
               {commentSubmitted && (
                 <p className="mt-3 text-sm text-green-600 font-medium text-center">
-                  感想を送信しました。ありがとうございます！
+                  ご意見を送信しました。ありがとうございます！
                 </p>
               )}
             </div>

@@ -265,6 +265,28 @@ function buildAdminNotificationHtml(
       ${adviceRows}
     </table>
 
+    <!-- タイプ詳細（1〜3位） -->
+    <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">診断タイプ詳細（1〜3位）</h2>
+    ${[
+      { rank: "🏆 1位", bt: r1, rankResult: result.rank1 },
+      { rank: "2位",    bt: r2, rankResult: result.rank2 },
+      { rank: "3位",    bt: r3, rankResult: result.rank3 },
+    ].map(({ rank, bt }) => bt ? `
+    <div style="margin-bottom:20px;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;">
+      <div style="background:#1e3a5f;padding:10px 14px;">
+        <span style="color:#d4a017;font-size:11px;font-weight:bold;margin-right:8px;">${rank}</span>
+        <span style="color:#ffffff;font-size:14px;font-weight:bold;">${bt.name}</span>
+      </div>
+      <div style="padding:14px;font-size:13px;">
+        <p style="margin:0 0 6px;"><strong style="color:#1e3a5f;">特徴：</strong><span style="color:#333333;">${bt.feature}</span></p>
+        <p style="margin:0 0 10px;"><strong style="color:#1e3a5f;">向いている理由：</strong><span style="color:#333333;">${bt.suitableReason}</span></p>
+        <p style="margin:0 0 6px;font-weight:bold;color:#1e3a5f;">アドバイス：</p>
+        <ol style="margin:0;padding-left:20px;color:#333333;">
+          ${bt.adviceList.map((adv) => `<li style="margin-bottom:4px;">${adv}</li>`).join("")}
+        </ol>
+      </div>
+    </div>` : "").join("")}
+
     <!-- アクション -->
     <div style="background:#fffbeb;border:1px solid #d4a017;border-radius:8px;padding:16px;font-size:13px;color:#333333;">
       <strong style="color:#1e3a5f;">📌 アクション：</strong>
