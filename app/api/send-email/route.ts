@@ -56,6 +56,12 @@ function rankBlock(
     <div style="background:${scoreBg};border-radius:8px;padding:10px;font-size:12px;color:${scoreColor};">
       即金性：${bt.immediacy}　参入条件：${bt.entryBar}　スケール性：${bt.scalability}
     </div>
+    <div style="margin-top:12px;background:${scoreBg};border-radius:8px;padding:12px;">
+      <p style="font-size:12px;font-weight:bold;color:${featured ? "#d4a017" : "#1e3a5f"};margin:0 0 8px;">アドバイス</p>
+      <ol style="margin:0;padding-left:18px;font-size:13px;color:${bodyColor};line-height:1.8;">
+        ${bt.adviceList.map((adv) => `<li style="margin-bottom:4px;">${adv}</li>`).join("")}
+      </ol>
+    </div>
     <div style="margin-top:10px;border-left:3px solid #d4a017;padding-left:10px;font-size:12px;color:${commentColor};line-height:1.75;">
       <strong style="color:#d4a017;display:block;margin-bottom:4px;">関達也のコメント</strong>
       「${displayComment}」
@@ -64,8 +70,6 @@ function rankBlock(
 }
 
 function buildResultHtml(lastName: string, result: DiagnosisResult): string {
-  const r1 = businessTypes.find((b) => b.id === result.rank1.typeId);
-
   const adviceRows = result.advice
     .map((adv, i) => {
       const text = adv.replace(/^[①②③1-9０-９][.．。）\)]\s*/, "").trim();
@@ -115,16 +119,6 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
         <h2 style="color:#ffffff;font-size:16px;margin:0 0 18px;font-weight:bold;">関達也からの3つのアドバイス</h2>
         ${adviceRows}
       </div>
-
-      ${r1 ? `
-      <!-- 1位タイプのアドバイス（静的） -->
-      <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:24px;margin:0 0 24px;">
-        <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 4px;font-weight:bold;">「${r1.name}」のアドバイス</h2>
-        <p style="font-size:12px;color:#888888;margin:0 0 16px;">このタイプに向けた実践的なポイントです</p>
-        <ol style="margin:0;padding-left:20px;color:#333333;font-size:14px;line-height:1.8;">
-          ${r1.adviceList.map((adv) => `<li style="margin-bottom:8px;">${adv}</li>`).join("")}
-        </ol>
-      </div>` : ""}
 
       ${process.env.NEXT_PUBLIC_SHOW_CONSULTING !== "false" ? `
       <!-- 個別相談CTA -->
