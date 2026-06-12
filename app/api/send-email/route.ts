@@ -64,6 +64,8 @@ function rankBlock(
 }
 
 function buildResultHtml(lastName: string, result: DiagnosisResult): string {
+  const r1 = businessTypes.find((b) => b.id === result.rank1.typeId);
+
   const adviceRows = result.advice
     .map((adv, i) => {
       const text = adv.replace(/^[①②③1-9０-９][.．。）\)]\s*/, "").trim();
@@ -108,11 +110,21 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
       ${rankBlock("2位", result.rank2.typeId, result.rank2.reason, false, result.rank2.sekiComment)}
       ${rankBlock("3位", result.rank3.typeId, result.rank3.reason, false, result.rank3.sekiComment)}
 
-      <!-- 関達也からのアドバイス -->
+      <!-- 関達也からのアドバイス（AI生成） -->
       <div style="background:#1e3a5f;border-radius:12px;padding:24px;margin:24px 0;">
         <h2 style="color:#ffffff;font-size:16px;margin:0 0 18px;font-weight:bold;">関達也からの3つのアドバイス</h2>
         ${adviceRows}
       </div>
+
+      ${r1 ? `
+      <!-- 1位タイプのアドバイス（静的） -->
+      <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:24px;margin:0 0 24px;">
+        <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 4px;font-weight:bold;">「${r1.name}」のアドバイス</h2>
+        <p style="font-size:12px;color:#888888;margin:0 0 16px;">このタイプに向けた実践的なポイントです</p>
+        <ol style="margin:0;padding-left:20px;color:#333333;font-size:14px;line-height:1.8;">
+          ${r1.adviceList.map((adv) => `<li style="margin-bottom:8px;">${adv}</li>`).join("")}
+        </ol>
+      </div>` : ""}
 
       ${process.env.NEXT_PUBLIC_SHOW_CONSULTING !== "false" ? `
       <!-- 個別相談CTA -->
@@ -271,7 +283,7 @@ function buildAdminNotificationHtml(
       { rank: "🏆 1位", bt: r1, rankResult: result.rank1 },
       { rank: "2位",    bt: r2, rankResult: result.rank2 },
       { rank: "3位",    bt: r3, rankResult: result.rank3 },
-    ].map(({ rank, bt }) => bt ? `
+    ].map(({ rank, bt, rankResult }) => bt ? `
     <div style="margin-bottom:20px;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;">
       <div style="background:#1e3a5f;padding:10px 14px;">
         <span style="color:#d4a017;font-size:11px;font-weight:bold;margin-right:8px;">${rank}</span>
@@ -281,9 +293,13 @@ function buildAdminNotificationHtml(
         <p style="margin:0 0 6px;"><strong style="color:#1e3a5f;">特徴：</strong><span style="color:#333333;">${bt.feature}</span></p>
         <p style="margin:0 0 10px;"><strong style="color:#1e3a5f;">向いている理由：</strong><span style="color:#333333;">${bt.suitableReason}</span></p>
         <p style="margin:0 0 6px;font-weight:bold;color:#1e3a5f;">アドバイス：</p>
-        <ol style="margin:0;padding-left:20px;color:#333333;">
+        <ol style="margin:0;padding-left:20px;color:#333333;margin-bottom:10px;">
           ${bt.adviceList.map((adv) => `<li style="margin-bottom:4px;">${adv}</li>`).join("")}
         </ol>
+        <div style="background:#fffbeb;border-left:3px solid #d4a017;padding:10px 12px;border-radius:0 6px 6px 0;">
+          <p style="margin:0 0 4px;font-size:11px;font-weight:bold;color:#d4a017;">関達也のコメント</p>
+          <p style="margin:0;color:#555555;line-height:1.7;">「${rankResult.sekiComment ?? bt.sekiComment}」</p>
+        </div>
       </div>
     </div>` : "").join("")}
 
