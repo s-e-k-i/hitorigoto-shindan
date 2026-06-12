@@ -38,6 +38,7 @@ const scalabilityScore: Record<string, number> = {
   "低〜中": 2,
   低: 1,
   なし: 0,
+  "次第で変わる": 2,
 };
 
 function TypeCard({
