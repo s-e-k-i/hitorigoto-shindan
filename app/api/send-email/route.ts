@@ -146,6 +146,13 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
       <p style="font-size:12px;color:#555555;margin:8px 0;">本メールは、ひとりビジネス適性診断にご登録いただいた方にお送りしています。</p>
       <p style="font-size:12px;color:#555555;margin:8px 0;">関達也の無料メールマガジンでは、ひとり起業に役立つ情報を定期的にお届けします。</p>
       <p style="font-size:12px;color:#555555;margin:8px 0;">引き続きよろしくお願いいたします。</p>
+      <p style="font-size:12px;color:#555555;margin:16px 0 4px;">診断の感想・ご質問・ご相談はお気軽にどうぞ。<br>
+        <a href="mailto:info@sekitatsuya.com" style="color:#1e3a5f;">info@sekitatsuya.com</a>
+      </p>
+      <p style="font-size:12px;color:#555555;margin:8px 0;">
+        ひとりビジネス適性診断はこちら<br>
+        <a href="https://hitoribusiness-shindan.vercel.app" style="color:#1e3a5f;">https://hitoribusiness-shindan.vercel.app</a>
+      </p>
     </div>
 
     <!-- フッター -->
