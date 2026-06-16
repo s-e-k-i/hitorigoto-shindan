@@ -305,13 +305,16 @@ function buildAdminNotificationHtml(
       <div style="padding:14px;font-size:13px;">
         <p style="margin:0 0 6px;"><strong style="color:#1e3a5f;">特徴：</strong><span style="color:#333333;">${bt.feature}</span></p>
         <p style="margin:0 0 10px;"><strong style="color:#1e3a5f;">向いている理由：</strong><span style="color:#333333;">${bt.suitableReason}</span></p>
+        <p style="margin:0 0 4px;"><strong style="color:#1e3a5f;">おすすめのビジネス例：</strong><span style="color:#333333;">${bt.businessExamples}</span></p>
+        <p style="margin:0 0 4px;"><strong style="color:#1e3a5f;">最初にやること：</strong><span style="color:#333333;">${bt.firstStep}</span></p>
+        <p style="margin:0 0 10px;"><strong style="color:#1e3a5f;">つまずきやすい点：</strong><span style="color:#333333;">${bt.pitfall}</span></p>
         <p style="margin:0 0 6px;font-weight:bold;color:#1e3a5f;">アドバイス：</p>
         <ol style="margin:0;padding-left:20px;color:#333333;margin-bottom:10px;">
           ${bt.adviceList.map((adv) => `<li style="margin-bottom:4px;">${adv}</li>`).join("")}
         </ol>
         <div style="background:#fffbeb;border-left:3px solid #d4a017;padding:10px 12px;border-radius:0 6px 6px 0;">
           <p style="margin:0 0 4px;font-size:11px;font-weight:bold;color:#d4a017;">関達也のコメント</p>
-          <p style="margin:0;color:#555555;line-height:1.7;">「${rankResult.sekiComment ?? bt.sekiComment}」</p>
+          <p style="margin:0;color:#555555;line-height:1.7;">${rankResult.sekiComment ?? bt.sekiComment}</p>
         </div>
       </div>
     </div>` : "").join("")}
