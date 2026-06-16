@@ -303,6 +303,7 @@ function buildAdminNotificationHtml(
         <span style="color:#ffffff;font-size:14px;font-weight:bold;">${bt.name}</span>
       </div>
       <div style="padding:14px;font-size:13px;">
+        <p style="margin:0 0 8px;font-size:12px;color:#555555;">即金性：${bt.immediacy}　参入条件：${bt.entryBar}　スケール性：${bt.scalability}</p>
         <p style="margin:0 0 6px;"><strong style="color:#1e3a5f;">特徴：</strong><span style="color:#333333;">${bt.feature}</span></p>
         <p style="margin:0 0 10px;"><strong style="color:#1e3a5f;">向いている理由：</strong><span style="color:#333333;">${bt.suitableReason}</span></p>
         <p style="margin:0 0 4px;"><strong style="color:#1e3a5f;">おすすめのビジネス例：</strong><span style="color:#333333;">${bt.businessExamples}</span></p>
