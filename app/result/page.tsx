@@ -134,7 +134,7 @@ function TypeCard({
         }`}
       >
         <p className="font-bold text-xs mb-1 text-[#d4a017]">関達也のコメント</p>
-        「{sekiComment ?? bt.sekiComment}」
+        {sekiComment ?? bt.sekiComment}
       </div>
 
       {/* おすすめのビジネス例・最初にやること・つまずきやすい点・アドバイス（full のみ） */}
