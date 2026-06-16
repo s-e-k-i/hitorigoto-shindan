@@ -284,12 +284,6 @@ function buildAdminNotificationHtml(
         .join("")}
     </table>
 
-    <!-- アドバイス -->
-    <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">関達也からの3つのアドバイス</h2>
-    <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:24px;">
-      ${adviceRows}
-    </table>
-
     <!-- タイプ詳細（1〜3位） -->
     <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">診断タイプ詳細（1〜3位）</h2>
     ${[
@@ -319,6 +313,12 @@ function buildAdminNotificationHtml(
         </div>
       </div>
     </div>` : "").join("")}
+
+    <!-- アドバイス -->
+    <h2 style="color:#1e3a5f;font-size:15px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #e5e7eb;">関達也からの3つのアドバイス</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:24px;">
+      ${adviceRows}
+    </table>
 
     <!-- アクション -->
     <div style="background:#fffbeb;border:1px solid #d4a017;border-radius:8px;padding:16px;font-size:13px;color:#333333;">
