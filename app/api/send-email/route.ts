@@ -341,7 +341,7 @@ export async function POST(request: Request) {
       resend.emails.send({
         from: FROM,
         to: [email],
-        reply_to: 'info@sekitatsuya.com',
+        replyTo: 'info@sekitatsuya.com',
         subject: `【診断結果】${lastName}さんに向いているひとりビジネスタイプが届きました`,
         html: buildResultHtml(lastName, result),
       }),
@@ -359,7 +359,7 @@ export async function POST(request: Request) {
       resend.emails.send({
         from: FROM,
         to: [ADMIN_EMAIL],
-        reply_to: 'info@sekitatsuya.com',
+        replyTo: 'info@sekitatsuya.com',
         subject: `【診断完了】${lastName}さんが診断を受けました`,
         html: buildAdminNotificationHtml(lastName, email, result, answers),
       }),
