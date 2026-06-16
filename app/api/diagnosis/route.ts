@@ -171,7 +171,11 @@ Q15（現在の悩み）: ${answers["q15"] ?? "未回答"}`;
       s.replace(/[\u300C\u300D\u300E\u300F\uFF62\uFF63]/g, "").trim();
     for (const key of ["rank1", "rank2", "rank3"] as const) {
       if (result[key]?.sekiComment) {
-        result[key].sekiComment = stripKagi(result[key].sekiComment);
+        const before = result[key].sekiComment;
+        const after = stripKagi(before);
+        console.log(`[stripKagi] ${key} before:`, before);
+        console.log(`[stripKagi] ${key} after: `, after);
+        result[key].sekiComment = after;
       }
     }
 
