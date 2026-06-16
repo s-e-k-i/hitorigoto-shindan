@@ -167,6 +167,14 @@ Q15（現在の悩み）: ${answers["q15"] ?? "未回答"}`;
       jsonText = jsonText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
     }
     const result = JSON.parse(jsonText);
+
+    const stripKagi = (s: string) => s.replace(/^「|」$/g, "").trim();
+    for (const key of ["rank1", "rank2", "rank3"] as const) {
+      if (result[key]?.sekiComment) {
+        result[key].sekiComment = stripKagi(result[key].sekiComment);
+      }
+    }
+
     return Response.json(result);
   } catch (err) {
     console.error("Diagnosis API error:", err);
