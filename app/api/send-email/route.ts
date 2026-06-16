@@ -57,6 +57,18 @@ function rankBlock(
       即金性：${bt.immediacy}　参入条件：${bt.entryBar}　スケール性：${bt.scalability}
     </div>
     <div style="margin-top:12px;background:${scoreBg};border-radius:8px;padding:12px;">
+      <p style="font-size:12px;font-weight:bold;color:${featured ? "#d4a017" : "#1e3a5f"};margin:0 0 6px;">おすすめのビジネス例</p>
+      <p style="font-size:13px;color:${bodyColor};line-height:1.75;margin:0;">${bt.businessExamples}</p>
+    </div>
+    <div style="margin-top:10px;background:${scoreBg};border-radius:8px;padding:12px;">
+      <p style="font-size:12px;font-weight:bold;color:${featured ? "#d4a017" : "#1e3a5f"};margin:0 0 6px;">最初にやること</p>
+      <p style="font-size:13px;color:${bodyColor};line-height:1.75;margin:0;">${bt.firstStep}</p>
+    </div>
+    <div style="margin-top:10px;background:${scoreBg};border-radius:8px;padding:12px;">
+      <p style="font-size:12px;font-weight:bold;color:${featured ? "#d4a017" : "#1e3a5f"};margin:0 0 6px;">つまずきやすい点</p>
+      <p style="font-size:13px;color:${bodyColor};line-height:1.75;margin:0;">${bt.pitfall}</p>
+    </div>
+    <div style="margin-top:10px;background:${scoreBg};border-radius:8px;padding:12px;">
       <p style="font-size:12px;font-weight:bold;color:${featured ? "#d4a017" : "#1e3a5f"};margin:0 0 8px;">アドバイス</p>
       <ol style="margin:0;padding-left:18px;font-size:13px;color:${bodyColor};line-height:1.8;">
         ${bt.adviceList.map((adv) => `<li style="margin-bottom:4px;">${adv}</li>`).join("")}
@@ -64,7 +76,7 @@ function rankBlock(
     </div>
     <div style="margin-top:10px;border-left:3px solid #d4a017;padding-left:10px;font-size:12px;color:${commentColor};line-height:1.75;">
       <strong style="color:#d4a017;display:block;margin-bottom:4px;">関達也のコメント</strong>
-      「${displayComment}」
+      ${displayComment}
     </div>
   </div>`;
 }
