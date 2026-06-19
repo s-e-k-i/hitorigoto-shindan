@@ -58,6 +58,7 @@ export default function AdminPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [marking, setMarking] = useState(false);
+  const [deleting, setDeleting] = useState<number | null>(null);
 
   const authHeader = { Authorization: `Bearer ${password}` };
 
@@ -123,6 +124,26 @@ export default function AdminPage() {
       // フラグ更新失敗はサイレントに（CSVは既にダウンロード済み）
     } finally {
       setMarking(false);
+    }
+  };
+
+  const handleDelete = async (index: number) => {
+    if (!confirm("この登録者を削除しますか？")) return;
+    setDeleting(index);
+    try {
+      const res = await fetch("/api/admin/delete-user", {
+        method: "DELETE",
+        headers: { ...authHeader, "Content-Type": "application/json" },
+        body: JSON.stringify({ index }),
+      });
+      if (!res.ok) { alert("削除に失敗しました"); return; }
+      // 削除後は一覧を再フェッチして_indexを再構築
+      const data = await fetch("/api/admin/users", { headers: authHeader }).then((r) => r.json());
+      setUsers(data.users ?? []);
+    } catch {
+      alert("通信エラーが発生しました");
+    } finally {
+      setDeleting(null);
     }
   };
 
@@ -215,6 +236,7 @@ export default function AdminPage() {
                     <th className="text-left px-4 py-3 font-semibold">登録日時</th>
                     <th className="text-left px-4 py-3 font-semibold">診断タイプ</th>
                     <th className="text-center px-4 py-3 font-semibold">DL済</th>
+                    <th className="px-4 py-3"></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -234,6 +256,15 @@ export default function AdminPage() {
                         ) : (
                           <span className="bg-orange-100 text-orange-600 text-xs font-bold px-2.5 py-1 rounded-full">未</span>
                         )}
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <button
+                          onClick={() => handleDelete(u._index)}
+                          disabled={deleting === u._index}
+                          className="bg-red-500 hover:bg-red-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-xs font-bold px-2.5 py-1 rounded-lg transition-colors"
+                        >
+                          {deleting === u._index ? "削除中" : "削除"}
+                        </button>
                       </td>
                     </tr>
                   ))}

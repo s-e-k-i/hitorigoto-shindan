@@ -250,7 +250,7 @@ export default function ResultPage() {
       "マッチングタイプ": "#マッチングビジネス",
       "イベントタイプ": "#セミナー",
       "サブスクリプションタイプ": "#オンラインサロン",
-      "即金・立て直しタイプ": "#副業",
+      "即金フリータイプ": "#副業",
     };
     const typeTag = rank1Type ? typeTagMap[rank1Type.name] : undefined;
     // 重複チェック（例：目的タグ #副業 とタイプタグ #副業 が同じ場合）
