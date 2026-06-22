@@ -487,7 +487,7 @@ export default function ResultPage() {
                   関達也が直接アドバイスします。
                 </p>
                 <a
-                  href="https://sekitatsuya.com/spot-consulting/"
+                  href="https://sekitatsuya.com/lp/hitoribiz-shindan"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block bg-[#d4a017] hover:bg-[#c49010] text-white font-bold px-8 py-4 rounded-xl transition-colors text-base shadow-md"

@@ -139,7 +139,7 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
         <p style="font-size:13px;color:#333333;margin:0 0 18px;line-height:1.7;">
           診断結果をもとに、あなたに最適なスタートプランを<br>関達也が直接アドバイスします。
         </p>
-        <a href="https://sekitatsuya.com/spot-consulting/" style="display:inline-block;background:#d4a017;color:#ffffff;font-size:14px;font-weight:bold;padding:13px 32px;border-radius:8px;text-decoration:none;">
+        <a href="https://sekitatsuya.com/mail/hitoribiz-shindan-m" style="display:inline-block;background:#d4a017;color:#ffffff;font-size:14px;font-weight:bold;padding:13px 32px;border-radius:8px;text-decoration:none;">
           個別相談はこちら →
         </a>
       </div>` : ""}
