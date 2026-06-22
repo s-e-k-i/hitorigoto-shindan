@@ -477,21 +477,26 @@ export default function ResultPage() {
             </div>
 
             {showConsulting && (
-              <div className="bg-amber-50 border-2 border-[#d4a017] rounded-2xl p-6 text-center">
+              <div className="bg-amber-50 border-2 border-[#d4a017] rounded-2xl p-6">
                 <h3 className="text-[#1e3a5f] text-lg font-bold mb-2 leading-relaxed">
                   診断結果を読んで、「自分の場合は具体的にどう動けばいいんだろう」と感じた方へ。
                 </h3>
+                <p className="text-gray-600 text-sm mb-1 leading-relaxed">
+                  監修者の関達也が、個別相談を再開しました。
+                </p>
                 <p className="text-gray-600 text-sm mb-5 leading-relaxed">
                   あなたの状況に合わせて、一緒に考えます。
                 </p>
-                <a
-                  href="https://sekitatsuya.com/lp/hitoribiz-shindan"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-[#d4a017] hover:bg-[#c49010] text-white font-bold px-8 py-4 rounded-xl transition-colors text-base shadow-md"
-                >
-                  個別相談の詳細を見る
-                </a>
+                <div className="text-center">
+                  <a
+                    href="https://sekitatsuya.com/lp/hitoribiz-shindan"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block bg-[#d4a017] hover:bg-[#c49010] text-white font-bold px-8 py-4 rounded-xl transition-colors text-base shadow-md"
+                  >
+                    個別相談の詳細を見る
+                  </a>
+                </div>
               </div>
             )}
 

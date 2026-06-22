@@ -134,10 +134,11 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
 
       ${process.env.NEXT_PUBLIC_SHOW_CONSULTING !== "false" ? `
       <!-- 個別相談 -->
-      <div style="background:#fffbeb;border:2px solid #d4a017;border-radius:12px;padding:24px;margin-bottom:24px;text-align:center;">
+      <div style="background:#fffbeb;border:2px solid #d4a017;border-radius:12px;padding:24px;margin-bottom:24px;">
         <p style="font-size:16px;font-weight:bold;color:#1e3a5f;margin:0 0 8px;line-height:1.7;">診断結果を読んで、「自分の場合は具体的にどう動けばいいんだろう」と感じた方へ。</p>
+        <p style="font-size:13px;color:#333333;margin:0 0 4px;line-height:1.7;">監修者の関達也が、個別相談を再開しました。</p>
         <p style="font-size:13px;color:#333333;margin:0 0 18px;line-height:1.7;">あなたの状況に合わせて、一緒に考えます。</p>
-        <a href="https://sekitatsuya.com/mail/hitoribiz-shindan-m" style="display:inline-block;background:#d4a017;color:#ffffff;font-size:14px;font-weight:bold;padding:13px 32px;border-radius:8px;text-decoration:none;">個別相談の詳細を見る</a>
+        <div style="text-align:center;"><a href="https://sekitatsuya.com/mail/hitoribiz-shindan-m" style="display:inline-block;background:#d4a017;color:#ffffff;font-size:14px;font-weight:bold;padding:13px 32px;border-radius:8px;text-decoration:none;">個別相談の詳細を見る</a></div>
       </div>` : ""}
 
       <!-- プロフィール -->
