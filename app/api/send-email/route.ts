@@ -133,15 +133,10 @@ function buildResultHtml(lastName: string, result: DiagnosisResult): string {
       </div>
 
       ${process.env.NEXT_PUBLIC_SHOW_CONSULTING !== "false" ? `
-      <!-- 個別相談CTA -->
-      <div style="text-align:center;background:#fffbeb;border:2px solid #d4a017;border-radius:12px;padding:24px;margin-bottom:24px;">
-        <p style="font-size:16px;font-weight:bold;color:#1e3a5f;margin:0 0 8px;">次のステップ：個別相談</p>
-        <p style="font-size:13px;color:#333333;margin:0 0 18px;line-height:1.7;">
-          診断結果をもとに、あなたに最適なスタートプランを<br>関達也が直接アドバイスします。
-        </p>
-        <a href="https://sekitatsuya.com/mail/hitoribiz-shindan-m" style="display:inline-block;background:#d4a017;color:#ffffff;font-size:14px;font-weight:bold;padding:13px 32px;border-radius:8px;text-decoration:none;">
-          個別相談はこちら →
-        </a>
+      <!-- 個別相談 -->
+      <div style="border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;padding:20px 0;margin-bottom:24px;">
+        <p style="font-size:13px;color:#333333;margin:0 0 8px;line-height:1.8;">診断結果を読んで、「自分の場合は具体的にどう動けばいいんだろう」と感じた方は、個別相談の詳細をご覧ください。</p>
+        <a href="https://sekitatsuya.com/mail/hitoribiz-shindan-m" style="font-size:13px;color:#1e3a5f;">https://sekitatsuya.com/mail/hitoribiz-shindan-m</a>
       </div>` : ""}
 
       <!-- プロフィール -->
