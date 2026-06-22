@@ -477,7 +477,7 @@ export default function ResultPage() {
             </div>
 
             {showConsulting && (
-              <div className="border-y border-gray-200 py-6">
+              <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-center">
                 <p className="text-gray-700 text-sm font-medium mb-1 leading-relaxed">
                   診断結果を読んで、「自分の場合は具体的にどう動けばいいんだろう」と感じた方へ。
                 </p>
@@ -488,7 +488,7 @@ export default function ResultPage() {
                   href="https://sekitatsuya.com/lp/hitoribiz-shindan"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block bg-[#1e3a5f] hover:bg-[#2d5a8e] text-white text-xs font-bold px-5 py-2.5 rounded-lg transition-colors"
+                  className="inline-block bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold px-5 py-2.5 rounded-lg transition-colors"
                 >
                   個別相談の詳細を見る
                 </a>
